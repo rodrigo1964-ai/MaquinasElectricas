@@ -1,116 +1,209 @@
+#!/usr/bin/env python3
 """
-Conversión automática de s4stp.mdl a Python
-Generado por mdl_parser.py
+S4STP.py - Step response of induction machine in synchronous reference frame
+Studies transient response to voltage step changes
 """
 import numpy as np
 from scipy.integrate import solve_ivp
+from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
-# Configuración del solver
-t_stop = 1.2
-rtol = 1e-6
-atol = 1e-6
-
-def model_equations(t, y):
+def simulate_step_response(params, vqse_profile, tstop=1.2, plot=True):
     """
-    Sistema de ecuaciones diferenciales
-    Bloques encontrados: 78
+    Simulate induction machine step response in synchronous reference frame.
+
+    Parameters:
+    -----------
+    params : dict
+        Machine parameters
+    vqse_profile : tuple (time_array, voltage_array)
+        Time-varying Q-axis voltage profile
+    tstop : float
+        Simulation time
+    plot : bool
+        Whether to plot results
+
+    Returns:
+    --------
+    sol : OdeResult
+        Solution object
     """
-    # TODO: Implementar ecuaciones basadas en:
-    # Clock: Clock
-    # SubSystem: m4stp
-    # Mux: Mux
-    # Scope: Scope
-    # Terminator: Term
-    # Terminator: Term1
-    # Terminator: Term2
-    # Constant: Tmech
-    # ToWorkspace: To Workspace
-    # Ground: Vdse
-    # SubSystem: Vqse
-    # Fcn: Fcn1
-    # Lookup: Look-Up Table
-    # Outport: out_1
-    # SubSystem: S4EIG
-    # Inport: in_vdse
-    # Inport: in_Tmech
-    # SubSystem: Daxis
-    # Inport: in_(wr/wb)*psiqr'
-    # Inport: in_psiqs
-    # Fcn: Fcn
-    # Fcn: Fcn2
-    # Fcn: Fcn3
-    # Fcn: Fcn4
-    # Fcn: Fcn5
-    # Mux: Mux
-    # Mux: Mux1
-    # Mux: Mux2
-    # Mux: Mux3
-    # Mux: Mux4
-    # Integrator: psidr'_
-    # Integrator: psids_
-    # Outport: out_psids
-    # Outport: out_ids
-    # Outport: out_idr'
-    # Outport: out_psidr'
-    # Product: Prod
-    # Product: Prod1
-    # SubSystem: Qaxis
-    # Inport: (wr-we)*psidr'/wb
-    # Inport: in_psids
-    # Fcn: Fcn
-    # Fcn: Fcn2
-    # Fcn: Fcn3
-    # Fcn: Fcn4
-    # Fcn: Fcn5
-    # Mux: Mux
-    # Mux: Mux1
-    # Mux: Mux2
-    # Mux: Mux3
-    # Mux: Mux4
-    # Integrator: psiqr'_
-    # Integrator: psiqs_
-    # Outport: out_psiqs
-    # Outport: out_iqs
-    # Outport: out_iqr'
-    # Outport: out_psiqr'
-    # SubSystem: Rotor
-    # Inport: in_iqse
-    # Inport: in_psiqse
-    # Inport: in_idse
-    # Inport: in_Tmech
-    # Gain: 1/2H
-    # Integrator: 1/s
-    # Gain: Damping\ncoefficient
-    # Mux: Mux
-    # Sum: Taccl
-    # Fcn: Tem
-    # Outport: out_Tem
-    # Outport: out_wr/wb
-    # Sum: Sum
-    # Terminator: Term
-    # Terminator: Term1
-    # Constant: we/wb
-    # Outport: out_iqse
-    # Outport: out_idse
-    # Outport: out_Tem
-    # Outport: out_wr/wb
 
-    dydt = []  # Implementar derivadas
-    return dydt
+    # Extract parameters
+    rs = params['rs']
+    rpr = params['rpr']
+    xls = params['xls']
+    xplr = params['xplr']
+    xM = params['xM']
+    wb = params['wb']
+    we = params['we']
+    H = params['H']
+    Domega = params['Domega']
+    Tfactor = params['Tfactor']
+    Tmech = params['Tmech']  # Constant mechanical load
 
-# Condiciones iniciales
-y0 = []  # Definir según bloques Integrator
+    # Create interpolation for vqse
+    vqse_time, vqse_values = vqse_profile
+    vqse_interp = interp1d(vqse_time, vqse_values, kind='linear',
+                          bounds_error=False, fill_value=vqse_values[-1])
 
-# Resolver
-sol = solve_ivp(model_equations, [0, t_stop], y0,
-                method='RK45', rtol=rtol, atol=atol)
+    # D-axis voltage (kept at zero)
+    vdse = 0.0
 
-# Graficar
-plt.figure()
-plt.plot(sol.t, sol.y.T)
-plt.xlabel('Time (s)')
-plt.ylabel('States')
-plt.title(f'{self.model_name} - Simulation Results')
-plt.grid(True)
-plt.show()
+    # Normalized synchronous frequency
+    we_wb = we / wb
+
+    def model_equations(t, x):
+        """
+        State vector x = [psiqs, psiqr, psids, psidr, wr_wb]
+        """
+        psiqs = x[0]
+        psiqr = x[1]
+        psids = x[2]
+        psidr = x[3]
+        wr_wb = x[4]
+
+        # Get time-varying voltage
+        vqse = float(vqse_interp(t))
+
+        # Magnetizing flux
+        psiqm = xM * (psiqs/xls + psiqr/xplr)
+        psidm = xM * (psids/xls + psidr/xplr)
+
+        # Stator currents
+        iqse = (psiqs - psiqm) / xls
+        idse = (psids - psidm) / xls
+
+        # Rotor currents
+        iqr = (psiqr - psiqm) / xplr
+        idr = (psidr - psidm) / xplr
+
+        # Slip speed term
+        wr_we_wb = wr_wb - we_wb
+
+        # Q-axis equations
+        dpsiqs_dt = wb * (vqse - we_wb * psids + (rs/xls) * (psiqs - psiqm))
+        dpsiqr_dt = wb * (wr_we_wb * psidr + (rpr/xplr) * (psiqr - psiqm))
+
+        # D-axis equations
+        dpsids_dt = wb * (vdse + we_wb * psiqs + (rs/xls) * (psids - psidm))
+        dpsidr_dt = wb * (-wr_we_wb * psiqr + (rpr/xplr) * (psidr - psidm))
+
+        # Electromagnetic torque
+        Tem = Tfactor * (psids * iqse - psiqs * idse)
+
+        # Rotor dynamics
+        dwr_dt = (1/(2*H)) * (Tem - Tmech - Domega * wr_wb)
+
+        return [dpsiqs_dt, dpsiqr_dt, dpsids_dt, dpsidr_dt, dwr_dt]
+
+    # Initial conditions
+    y0 = [params['Psiqso'], params['Psipqro'], params['Psidso'],
+          params['Psipdro'], params['wrbywbo']]
+
+    # Solve ODE
+    t_span = [0, tstop]
+    t_eval = np.linspace(0, tstop, 3000)
+
+    sol = solve_ivp(model_equations, t_span, y0, method='RK45',
+                    t_eval=t_eval, rtol=1e-6, atol=1e-6,
+                    dense_output=True)
+
+    if not sol.success:
+        print(f"Warning: Integration failed: {sol.message}")
+
+    # Calculate output quantities and plot
+    if plot and sol.success:
+        t = sol.t
+        psiqs = sol.y[0]
+        psiqr = sol.y[1]
+        psids = sol.y[2]
+        psidr = sol.y[3]
+        wr_wb = sol.y[4]
+
+        # Calculate currents and torque
+        iqse_arr = np.zeros_like(t)
+        idse_arr = np.zeros_like(t)
+        Tem_arr = np.zeros_like(t)
+        vqse_arr = np.zeros_like(t)
+
+        for i in range(len(t)):
+            psiqm = xM * (psiqs[i]/xls + psiqr[i]/xplr)
+            psidm = xM * (psids[i]/xls + psidr[i]/xplr)
+            iqse_arr[i] = (psiqs[i] - psiqm) / xls
+            idse_arr[i] = (psids[i] - psidm) / xls
+            Tem_arr[i] = Tfactor * (psids[i] * iqse_arr[i] - psiqs[i] * idse_arr[i])
+            vqse_arr[i] = vqse_interp(t[i])
+
+        # Plot results
+        fig, axs = plt.subplots(4, 1, figsize=(10, 10))
+
+        axs[0].plot(t, vqse_arr)
+        axs[0].set_ylabel('vqse (V)')
+        axs[0].set_title('Q-Axis Voltage Step Input')
+        axs[0].grid(True)
+
+        axs[1].plot(t, iqse_arr, label='iqse')
+        axs[1].plot(t, idse_arr, label='idse')
+        axs[1].set_ylabel('Current (A)')
+        axs[1].set_title('Synchronous Frame Stator Currents')
+        axs[1].legend()
+        axs[1].grid(True)
+
+        axs[2].plot(t, Tem_arr)
+        axs[2].set_ylabel('Tem (Nm)')
+        axs[2].set_title('Electromagnetic Torque')
+        axs[2].grid(True)
+
+        axs[3].plot(t, wr_wb)
+        axs[3].set_ylabel('wr/wb')
+        axs[3].set_xlabel('Time (s)')
+        axs[3].set_title('Per-Unit Rotor Speed')
+        axs[3].grid(True)
+
+        plt.tight_layout()
+        plt.show()
+
+    return sol
+
+
+if __name__ == "__main__":
+    # Load parameters from p20hp
+    from p20hp import *
+
+    # Initial conditions (start from standstill or steady state)
+    Psiqso = 0.0
+    Psipqro = 0.0
+    Psidso = 0.0
+    Psipdro = 0.0
+    wrbywbo = 0.0  # Start from rest
+
+    # Mechanical torque (constant load)
+    Tmech_val = -Tb  # Full load
+
+    # Voltage step profile (step increase at t=1s)
+    # Start at rated voltage, step up at 1 second
+    vqse_time = np.array([0, 1.0, 1.0, 1.2])
+    vqse_values = np.array([Vm, Vm, Vm+1, Vm+1])
+    vqse_profile = (vqse_time, vqse_values)
+
+    # Simulation time
+    tstop = 1.2
+
+    # Package parameters
+    params = {
+        'rs': rs, 'rpr': rpr,
+        'xls': xls, 'xplr': xplr, 'xM': xM,
+        'wb': wb, 'we': we, 'H': H, 'Domega': Domega,
+        'Tfactor': Tfactor, 'Tmech': Tmech_val,
+        'Psiqso': Psiqso, 'Psipqro': Psipqro,
+        'Psidso': Psidso, 'Psipdro': Psipdro, 'wrbywbo': wrbywbo
+    }
+
+    # Run simulation
+    print("Running S4STP - Step Response in Synchronous Reference Frame")
+    print(f"Voltage step: {Vm:.2f}V -> {Vm+1:.2f}V at t=1.0s")
+    print(f"Mechanical torque: {Tmech_val:.2f} Nm")
+    print(f"Simulation time: 0 to {tstop} seconds")
+
+    sol = simulate_step_response(params, vqse_profile, tstop=tstop, plot=True)
