@@ -1,0 +1,668 @@
+Model {
+  Name			  "s5"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "35"
+  Solver		  ode15s
+  RelTol		  "1e-6"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "0.05"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s5"
+    Location		    [22, 54, 705, 460]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Gain
+      Name		      "1/(Laq+Lse)"
+      Position		      [240, 211, 335, 269]
+      Gain		      "1/(Laq+Lse)"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "1/J"
+      Position		      [525, 134, 570, 176]
+      Gain		      "1/J"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "1/wmo"
+      Position		      [210, 145, 260, 185]
+      Orientation	      left
+      Gain		      "1/wmo"
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [90, 50, 110, 70]
+      Orientation	      down
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Ea_"
+      Position		      [145, 105, 165, 140]
+      Orientation	      left
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Ea_"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      Ground
+      Name		      "Grd"
+      Position		      [120, 278, 130, 292]
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator"
+      Position		      [350, 224, 385, 256]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator2"
+      Position		      [590, 139, 620, 171]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m5"
+      Position		      [490, 269, 569, 310]
+      DropShadow	      on
+      OpenFcn		      "m5"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m5.m"
+      MaskHelp		      "Uses m5.m to initialize and plot"
+      MaskDisplay	      "disp('Initialize\\nand plot')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m5"
+	Location		[420, 453, 705, 574]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [147, 52]
+	  VerticalAlignment	  top
+	  Text			  "Uses m5.m to initialize s5.m\nand plot "
+				  "results "
+	}
+      }
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Mag_curve"
+      Position		      [285, 140, 350, 190]
+      Orientation	      left
+      InputValues	      "SEIP5"
+      OutputValues	      "SEVP5"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [174, 50, 616, 70]
+      Orientation	      up
+      Inputs		      "5"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Product"
+      Position		      [425, 119, 440, 161]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Product"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Ra+Rse"
+      Position		      [260, 292, 350, 328]
+      Orientation	      left
+      Gain		      "Ra+Rse"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Rbrake"
+      Position		      [200, 335, 270, 375]
+      Orientation	      left
+      Gain		      "Rbrake"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "Rinsertion"
+      Position		      [150, 288, 165, 322]
+      Threshold		      "0.5"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [305, 15, 325, 35]
+      Orientation	      left
+      Floating		      off
+      Location		      [23, 362, 713, 594]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "35"
+      YMin		      "-150"
+      YMax		      "150"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Position		      [205, 204, 225, 276]
+      Inputs		      "-+--"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum2"
+      Position		      [485, 127, 500, 178]
+      Inputs		      "++"
+    }
+    Block {
+      BlockType		      Step
+      Name		      "Switchover"
+      Position		      [60, 288, 90, 322]
+      Time		      "8"
+      Before		      "1"
+      After		      "0"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Tmech"
+      Position		      [485, 207, 535, 233]
+      Orientation	      left
+      Value		      "-Trated"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [445, 16, 490, 34]
+      VariableName	      "y"
+      Buffer		      "20000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "Va"
+      Position		      [140, 212, 155, 248]
+      Threshold		      "0.5"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Va_braking"
+      Position		      [20, 246, 90, 264]
+      Value		      "Vbrake"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Va_motoring"
+      Position		      [20, 211, 95, 229]
+      Value		      "Vmotor"
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      DstBlock		      "1/(Laq+Lse)"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum2"
+      SrcPort		      1
+      DstBlock		      "1/J"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "1/J"
+      SrcPort		      1
+      DstBlock		      "Integrator2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "1/(Laq+Lse)"
+      SrcPort		      1
+      DstBlock		      "Integrator"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      Points		      [0, 10]
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mag_curve"
+      SrcPort		      1
+      DstBlock		      "1/wmo"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Tmech"
+      SrcPort		      1
+      Points		      [-10, 0]
+      DstBlock		      "Sum2"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "1/wmo"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[-10, 0; 0, -35]
+	DstBlock		"Product"
+	DstPort			1
+      }
+      Branch {
+	Points			[-10, 0; 0, -35]
+	DstBlock		"Ea_"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Ea_"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[-25, 0; 0, 85]
+	DstBlock		"Sum"
+	DstPort			1
+      }
+      Branch {
+	Points			[-25, 0; 0, -30; 190, 0]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Integrator"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[5, 0; 0, 70]
+	DstBlock		"Ra+Rse"
+	DstPort			1
+      }
+      Branch {
+	Points			[5, 0]
+	DstBlock		"Mux"
+	DstPort			3
+      }
+      Branch {
+	Points			[5, 0; 0, -75]
+	DstBlock		"Mag_curve"
+	DstPort			1
+      }
+      Branch {
+	Points			[5, 0; 0, -90]
+	DstBlock		"Product"
+	DstPort			2
+      }
+      Branch {
+	Points			[5, 0; 0, 115]
+	DstBlock		"Rbrake"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Rbrake"
+      SrcPort		      1
+      Points		      [-60, 0]
+      DstBlock		      "Rinsertion"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Ra+Rse"
+      SrcPort		      1
+      Points		      [-70, 0; 0, -40]
+      DstBlock		      "Sum"
+      DstPort		      4
+    }
+    Line {
+      SrcBlock		      "Rinsertion"
+      SrcPort		      1
+      Points		      [10, 0; 0, -55]
+      DstBlock		      "Sum"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Va"
+      SrcPort		      1
+      DstBlock		      "Sum"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Va_motoring"
+      SrcPort		      1
+      DstBlock		      "Va"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Va_braking"
+      SrcPort		      1
+      Points		      [15, 0; 0, -15]
+      DstBlock		      "Va"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Switchover"
+      SrcPort		      1
+      Points		      [40, 0]
+      Branch {
+	DstBlock		"Rinsertion"
+	DstPort			2
+      }
+      Branch {
+	Points			[-35, 0; 0, -75]
+	DstBlock		"Va"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Integrator2"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[5, 0; 0, -40]
+	DstBlock		"Ea_"
+	DstPort			1
+      }
+      Branch {
+	Points			[5, 0; 0, -55; -55, 0]
+	DstBlock		"Mux"
+	DstPort			5
+      }
+    }
+    Line {
+      SrcBlock		      "Product"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Sum2"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -45; 40, 0]
+	DstBlock		"Mux"
+	DstPort			4
+      }
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[0, -20]
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -20]
+	DstBlock		"Scope"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Grd"
+      SrcPort		      1
+      DstBlock		      "Rinsertion"
+      DstPort		      1
+    }
+    Annotation {
+      Position		      [412, 227]
+      VerticalAlignment	      top
+      Text		      "Ia"
+    }
+    Annotation {
+      Position		      [457, 127]
+      VerticalAlignment	      top
+      Text		      "Tem"
+    }
+    Annotation {
+      Position		      [172, 167]
+      VerticalAlignment	      top
+      Text		      "kaphi"
+    }
+    Annotation {
+      Position		      [132, 108]
+      VerticalAlignment	      top
+      Text		      "Ea"
+    }
+    Annotation {
+      Position		      [642, 157]
+      VerticalAlignment	      top
+      Text		      "wm"
+    }
+  }
+}

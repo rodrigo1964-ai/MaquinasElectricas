@@ -1,0 +1,1679 @@
+Model {
+  Name			  "s3"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "999999"
+  Solver		  ode45
+  RelTol		  "1e-3"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "10"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s3"
+    Location		    [90, 54, 609, 390]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Inport
+      Name		      "vqe"
+      Position		      [100, 80, 120, 100]
+      Port		      "1"
+      PortWidth		      "-1"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Inport
+      Name		      "vde"
+      Position		      [100, 135, 120, 155]
+      Port		      "2"
+      PortWidth		      "-1"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Inport
+      Name		      "Ex"
+      Position		      [100, 190, 120, 210]
+      Port		      "3"
+      PortWidth		      "-1"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Inport
+      Name		      "Tmech"
+      Position		      [100, 245, 120, 265]
+      Port		      "4"
+      PortWidth		      "-1"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "smwes"
+      Position		      [170, 58, 285, 282]
+      ShowPortLabels	      off
+      System {
+	Name			"smwes"
+	Location		[14, 87, 818, 540]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vqse"
+	  Position		  [70, 250, 90, 270]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vdse"
+	  Position		  [70, 290, 90, 310]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_Ex"
+	  Position		  [350, 325, 370, 345]
+	  Port			  "3"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_Tmech"
+	  Position		  [550, 320, 570, 340]
+	  Port			  "4"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [185, 229, 350, 261]
+	  Expr			  "u[2]*cos(u[1])-u[3]*sin(u[1])"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn1"
+	  Position		  [185, 279, 350, 311]
+	  Expr			  "u[2]*sin(u[1])+u[3]*cos(u[1])"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux1"
+	  Position		  [130, 198, 155, 322]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "Rotor"
+	  Position		  [595, 213, 640, 347]
+	  ShowPortLabels	  off
+	  System {
+	    Name		    "Rotor"
+	    Location		    [11, 77, 705, 373]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "-iq"
+	      Position		      [80, 95, 100, 115]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "psid "
+	      Position		      [80, 130, 100, 150]
+	      Port		      "2"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "psiq"
+	      Position		      [80, 170, 100, 190]
+	      Port		      "3"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "-id"
+	      Position		      [80, 210, 100, 230]
+	      Port		      "4"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "Tmech"
+	      Position		      [80, 60, 100, 80]
+	      Port		      "5"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Gain
+	      Name		      "1/2H"
+	      Position		      [310, 120, 380, 160]
+	      Gain		      "1/(2*H)"
+	    }
+	    Block {
+	      BlockType		      Gain
+	      Name		      "Damping"
+	      Position		      [315, 68, 405, 102]
+	      Orientation	      left
+	      Gain		      "Domega"
+	    }
+	    Block {
+	      BlockType		      Product
+	      Name		      "Prod"
+	      Position		      [140, 124, 155, 146]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Product
+	      Name		      "Prod2"
+	      Position		      [140, 175, 155, 195]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Sum
+	      Name		      "Sum12"
+	      Position		      [180, 111, 200, 209]
+	      Inputs		      "-+"
+	    }
+	    Block {
+	      BlockType		      Sum
+	      Name		      "Sum14"
+	      Position		      [490, 183, 505, 227]
+	      Inputs		      "++"
+	    }
+	    Block {
+	      BlockType		      Sum
+	      Name		      "Tacc"
+	      Position		      [270, 110, 290, 170]
+	      Inputs		      "-++"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "del"
+	      Position		      [530, 125, 565, 155]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "0"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Gain
+	      Name		      "gain4"
+	      Position		      [475, 124, 510, 156]
+	      Gain		      "wb"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "slip"
+	      Position		      [400, 125, 435, 155]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "0"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Constant
+	      Name		      "we/wb"
+	      Position		      [415, 203, 445, 227]
+	      Value		      "1"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "delta"
+	      Position		      [595, 130, 615, 150]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "wr/wb "
+	      Position		      [600, 195, 620, 215]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Tem"
+	      Position		      [265, 203, 290, 227]
+	      Port		      "3"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "(wr-we)/wb"
+	      Position		      [595, 75, 615, 95]
+	      Port		      "4"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Line {
+	      SrcBlock		      "Damping"
+	      SrcPort		      1
+	      Points		      [-60, 0; 0, 35]
+	      DstBlock		      "Tacc"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "gain4"
+	      SrcPort		      1
+	      DstBlock		      "del"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Prod2"
+	      SrcPort		      1
+	      DstBlock		      "Sum12"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "1/2H"
+	      SrcPort		      1
+	      DstBlock		      "slip"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "we/wb"
+	      SrcPort		      1
+	      DstBlock		      "Sum14"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Tacc"
+	      SrcPort		      1
+	      DstBlock		      "1/2H"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Prod"
+	      SrcPort		      1
+	      DstBlock		      "Sum12"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "-iq"
+	      SrcPort		      1
+	      Points		      [10, 0; 0, 25]
+	      DstBlock		      "Prod"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "psid "
+	      SrcPort		      1
+	      DstBlock		      "Prod"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "psiq"
+	      SrcPort		      1
+	      DstBlock		      "Prod2"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "-id"
+	      SrcPort		      1
+	      Points		      [10, 0; 0, -30]
+	      DstBlock		      "Prod2"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Sum14"
+	      SrcPort		      1
+	      DstBlock		      "wr/wb "
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Sum12"
+	      SrcPort		      1
+	      Points		      [0, 0]
+	      Branch {
+		DstBlock		"Tacc"
+		DstPort			3
+	      }
+	      Branch {
+		Points			[35, 0; 0, 55]
+		DstBlock		"Tem"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "slip"
+	      SrcPort		      1
+	      Points		      [0, 0]
+	      Branch {
+		DstBlock		"gain4"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[15, 0; 0, 55]
+		DstBlock		"Sum14"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[15, 0; 0, -55]
+		DstBlock		"Damping"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[15, 0; 0, -55]
+		DstBlock		"(wr-we)/wb"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Tmech"
+	      SrcPort		      1
+	      Points		      [130, 0; 0, 70]
+	      DstBlock		      "Tacc"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "del"
+	      SrcPort		      1
+	      DstBlock		      "delta"
+	      DstPort		      1
+	    }
+	    Annotation {
+	      Position		      [222, 147]
+	      VerticalAlignment	      top
+	      Text		      "Tem_"
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "T"
+	  Position		  [615, 81, 620, 89]
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "T1"
+	  Position		  [630, 96, 635, 104]
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "T2"
+	  Position		  [495, 241, 500, 249]
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "T3"
+	  Position		  [505, 316, 510, 324]
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "T4"
+	  Position		  [505, 341, 510, 349]
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "VIPQ"
+	  Position		  [560, 78, 595, 137]
+	  ShowPortLabels	  off
+	  System {
+	    Name		    "VIPQ"
+	    Location		    [217, 186, 928, 574]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "vqr"
+	      Position		      [115, 90, 135, 110]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "-iqr"
+	      Position		      [115, 135, 135, 155]
+	      Port		      "2"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "vdr"
+	      Position		      [115, 180, 135, 200]
+	      Port		      "3"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "-idr"
+	      Position		      [115, 225, 135, 245]
+	      Port		      "4"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn"
+	      Position		      [285, 75, 450, 105]
+	      Expr		      "sqrt(u[1]*u[1] + u[3]*u[3])"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn1"
+	      Position		      [285, 125, 450, 155]
+	      Expr		      "sqrt(u[2]*u[2] + u[4]*u[4])"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux"
+	      Position		      [180, 75, 210, 260]
+	      Inputs		      "4"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "P"
+	      Position		      [285, 180, 450, 210]
+	      Expr		      "u[1]*u[2] + u[3]*u[4]"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Q"
+	      Position		      [285, 230, 450, 260]
+	      Expr		      "u[1]*u[4]-u[2]*u[3]"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_|Vt|"
+	      Position		      [510, 80, 530, 100]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_|It|"
+	      Position		      [510, 130, 530, 150]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Pgen"
+	      Position		      [510, 185, 530, 205]
+	      Port		      "3"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Qgen"
+	      Position		      [510, 235, 530, 255]
+	      Port		      "4"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Line {
+	      SrcBlock		      "vqr"
+	      SrcPort		      1
+	      DstBlock		      "Mux"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "-iqr"
+	      SrcPort		      1
+	      DstBlock		      "Mux"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "vdr"
+	      SrcPort		      1
+	      DstBlock		      "Mux"
+	      DstPort		      3
+	    }
+	    Line {
+	      SrcBlock		      "-idr"
+	      SrcPort		      1
+	      DstBlock		      "Mux"
+	      DstPort		      4
+	    }
+	    Line {
+	      SrcBlock		      "P"
+	      SrcPort		      1
+	      DstBlock		      "Pgen"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Q"
+	      SrcPort		      1
+	      DstBlock		      "Qgen"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Mux"
+	      SrcPort		      1
+	      Points		      [0, 0]
+	      Branch {
+		Points			[25, 0; 0, 25]
+		DstBlock		"P"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[25, 0; 0, 75]
+		DstBlock		"Q"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[25, 0; 0, -80]
+		DstBlock		"Fcn"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[25, 0; 0, -30]
+		DstBlock		"Fcn1"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Fcn1"
+	      SrcPort		      1
+	      DstBlock		      "Out_|It|"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn"
+	      SrcPort		      1
+	      DstBlock		      "Out_|Vt|"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "d_cct"
+	  Position		  [425, 284, 460, 341]
+	  ShowPortLabels	  off
+	  System {
+	    Name		    "d_cct"
+	    Location		    [79, 45, 797, 528]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "In_vdr"
+	      Position		      [50, 105, 70, 125]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "In_wrpsiq"
+	      Position		      [50, 160, 70, 180]
+	      Port		      "2"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "In_Ef"
+	      Position		      [50, 250, 70, 270]
+	      Port		      "3"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn"
+	      Position		      [180, 125, 375, 155]
+	      Expr		      "wb*(u[2]+u[3]+(rs/xls)*(u[1]-u[4]))"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn1"
+	      Position		      [175, 245, 375, 275]
+	      Expr		      "wb*rpf*(u[2]/xmd+(u[1]-u[3])/xplf)"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn2"
+	      Position		      [180, 356, 365, 384]
+	      Expr		      "wb*rpkd*(u[1]-u[2])/xplkd"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn3"
+	      Position		      [535, 112, 715, 148]
+	      Expr		      "xMD*(u[1]/xls+u[2]/xplf+u[3]/xplkd)"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn4"
+	      Position		      [565, 227, 655, 253]
+	      Expr		      "-(u[1]-u[2])/xls"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn5"
+	      Position		      [565, 332, 655, 358]
+	      Expr		      "(u[1]-u[2])/xplf"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux"
+	      Position		      [135, 86, 160, 189]
+	      Inputs		      "4"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux1"
+	      Position		      [135, 217, 160, 303]
+	      Inputs		      "3"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux2"
+	      Position		      [130, 330, 155, 405]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux3"
+	      Position		      [495, 87, 520, 173]
+	      Inputs		      "3"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux4"
+	      Position		      [520, 204, 540, 271]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux5"
+	      Position		      [520, 309, 540, 376]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "psid_"
+	      Position		      [390, 127, 420, 153]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "Psido"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "psipf_"
+	      Position		      [390, 247, 420, 273]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "Psifo"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "psipkd_"
+	      Position		      [390, 357, 420, 383]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "Psikdo"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_psid"
+	      Position		      [585, 45, 605, 65]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_-id"
+	      Position		      [755, 230, 775, 250]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_psimd"
+	      Position		      [750, 120, 770, 140]
+	      Port		      "3"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_ipf"
+	      Position		      [745, 335, 765, 355]
+	      Port		      "4"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Line {
+	      SrcBlock		      "In_wrpsiq"
+	      SrcPort		      1
+	      Points		      [20, 0; 0, -20]
+	      DstBlock		      "Mux"
+	      DstPort		      3
+	    }
+	    Line {
+	      SrcBlock		      "In_vdr"
+	      SrcPort		      1
+	      Points		      [20, 0; 0, 10]
+	      DstBlock		      "Mux"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Mux"
+	      SrcPort		      1
+	      DstBlock		      "Fcn"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn"
+	      SrcPort		      1
+	      DstBlock		      "psid_"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Mux1"
+	      SrcPort		      1
+	      DstBlock		      "Fcn1"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn1"
+	      SrcPort		      1
+	      DstBlock		      "psipf_"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "In_Ef"
+	      SrcPort		      1
+	      DstBlock		      "Mux1"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Mux2"
+	      SrcPort		      1
+	      DstBlock		      "Fcn2"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn2"
+	      SrcPort		      1
+	      DstBlock		      "psipkd_"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "psid_"
+	      SrcPort		      1
+	      Points		      [0, 0]
+	      Branch {
+		Points			[10, 0; 0, 65; -320, 0; 0, -30]
+		DstBlock		"Mux"
+		DstPort			4
+	      }
+	      Branch {
+		Points			[10, 0; 0, -40]
+		DstBlock		"Mux3"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[45, 0; 0, 80]
+		DstBlock		"Mux4"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[10, 0; 0, -85]
+		DstBlock		"Out_psid"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "psipf_"
+	      SrcPort		      1
+	      Points		      [0, 0]
+	      Branch {
+		Points			[25, 0; 0, 60; -335, 0; 0, -30]
+		DstBlock		"Mux1"
+		DstPort			3
+	      }
+	      Branch {
+		Points			[25, 0; 0, -130]
+		DstBlock		"Mux3"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[60, 0; 0, 65]
+		DstBlock		"Mux5"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "psipkd_"
+	      SrcPort		      1
+	      Points		      [0, 0]
+	      Branch {
+		Points			[35, 0; 0, 60; -350, 0; 0, -45]
+		DstBlock		"Mux2"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[35, 0; 0, -210]
+		DstBlock		"Mux3"
+		DstPort			3
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Mux3"
+	      SrcPort		      1
+	      DstBlock		      "Fcn3"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Mux4"
+	      SrcPort		      1
+	      DstBlock		      "Fcn4"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Mux5"
+	      SrcPort		      1
+	      DstBlock		      "Fcn5"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn3"
+	      SrcPort		      1
+	      Points		      [5, 0]
+	      Branch {
+		Points			[0, 315; -230, 0; 0, -85]
+		DstBlock		"Mux5"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[0, 175; -230, 0; 0, -50]
+		DstBlock		"Mux4"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[0, 315; -635, 0; 0, -95]
+		DstBlock		"Mux2"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, 315; -635, 0; 0, -215]
+		DstBlock		"Mux1"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, -50; -610, 0; 0, 20]
+		DstBlock		"Mux"
+		DstPort			1
+	      }
+	      Branch {
+		DstBlock		"Out_psimd"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Fcn4"
+	      SrcPort		      1
+	      DstBlock		      "Out_-id"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn5"
+	      SrcPort		      1
+	      DstBlock		      "Out_ipf"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "prod1"
+	  Position		  [435, 159, 450, 186]
+	  Orientation		  left
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "prod2"
+	  Position		  [435, 358, 450, 387]
+	  Orientation		  left
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "q_cct"
+	  Position		  [425, 204, 460, 256]
+	  ShowPortLabels	  off
+	  System {
+	    Name		    "q_cct"
+	    Location		    [42, 119, 705, 469]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "In_vqr"
+	      Position		      [50, 105, 70, 125]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "In_wrpsid"
+	      Position		      [50, 160, 70, 180]
+	      Port		      "2"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn"
+	      Position		      [180, 124, 335, 156]
+	      Expr		      "wb*(u[2]-u[3]+(rs/xls)*(u[1]-u[4]))"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn2"
+	      Position		      [180, 229, 330, 261]
+	      Expr		      "wb*rpkq*(u[1]-u[2])/xplkq"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn3"
+	      Position		      [500, 113, 620, 147]
+	      Expr		      "xMQ*(u[1]/xls+u[2]/xplkq)"
+	    }
+	    Block {
+	      BlockType		      Fcn
+	      Name		      "Fcn4"
+	      Position		      [505, 202, 595, 228]
+	      Expr		      "-(u[1]-u[2])/xls"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux"
+	      Position		      [135, 86, 160, 189]
+	      Inputs		      "4"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux2"
+	      Position		      [135, 213, 160, 277]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux3"
+	      Position		      [455, 92, 480, 163]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "Mux4"
+	      Position		      [455, 179, 475, 246]
+	      Inputs		      "2"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "psipkq_"
+	      Position		      [345, 232, 375, 258]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "Psikqo"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Integrator
+	      Name		      "psiq_"
+	      Position		      [350, 127, 380, 153]
+	      ExternalReset	      none
+	      InitialConditionSource      internal
+	      InitialCondition	      "Psiqo"
+	      LimitOutput	      off
+	      UpperSaturationLimit      "inf"
+	      LowerSaturationLimit      "-inf"
+	      ShowSaturationPort      off
+	      ShowStatePort	      off
+	      AbsoluteTolerance	      "auto"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_psiq"
+	      Position		      [585, 45, 605, 65]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_-iq"
+	      Position		      [665, 205, 685, 225]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Out_psimq"
+	      Position		      [665, 120, 685, 140]
+	      Port		      "3"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Line {
+	      SrcBlock		      "In_wrpsid"
+	      SrcPort		      1
+	      Points		      [20, 0; 0, -20]
+	      DstBlock		      "Mux"
+	      DstPort		      3
+	    }
+	    Line {
+	      SrcBlock		      "In_vqr"
+	      SrcPort		      1
+	      Points		      [20, 0; 0, 10]
+	      DstBlock		      "Mux"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Mux"
+	      SrcPort		      1
+	      DstBlock		      "Fcn"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn"
+	      SrcPort		      1
+	      DstBlock		      "psiq_"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Mux2"
+	      SrcPort		      1
+	      DstBlock		      "Fcn2"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn2"
+	      SrcPort		      1
+	      DstBlock		      "psipkq_"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "psiq_"
+	      SrcPort		      1
+	      Points		      [29, 0]
+	      Branch {
+		Points			[-24, 0; 0, 65; -275, 0; 0, -30]
+		DstBlock		"Mux"
+		DstPort			4
+	      }
+	      Branch {
+		Points			[-24, 0; 0, -30]
+		DstBlock		"Mux3"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[1, 0; 0, 55]
+		DstBlock		"Mux4"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[-24, 0; 0, -85]
+		DstBlock		"Out_psiq"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "psipkq_"
+	      SrcPort		      1
+	      Points		      [24, 0]
+	      Branch {
+		Points			[1, 0; 0, 60; -290, 0; 0, -45]
+		DstBlock		"Mux2"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[1, 0; 0, -100]
+		DstBlock		"Mux3"
+		DstPort			2
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Mux3"
+	      SrcPort		      1
+	      DstBlock		      "Fcn3"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Mux4"
+	      SrcPort		      1
+	      DstBlock		      "Fcn4"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Fcn3"
+	      SrcPort		      1
+	      Points		      [15, 0]
+	      Branch {
+		Points			[0, 185; -220, 0; 0, -85]
+		DstBlock		"Mux4"
+		DstPort			2
+	      }
+	      Branch {
+		Points			[0, 185; -550, 0; 0, -85]
+		DstBlock		"Mux2"
+		DstPort			1
+	      }
+	      Branch {
+		Points			[0, -50; -525, 0; 0, 20]
+		DstBlock		"Mux"
+		DstPort			1
+	      }
+	      Branch {
+		DstBlock		"Out_psimq"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Fcn4"
+	      SrcPort		      1
+	      DstBlock		      "Out_-iq"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_Pgen"
+	  Position		  [720, 105, 740, 125]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_Qgen"
+	  Position		  [680, 120, 700, 140]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_delta"
+	  Position		  [720, 220, 740, 240]
+	  Port			  "3"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_Tem"
+	  Position		  [720, 290, 740, 310]
+	  Port			  "4"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_(wr-we)/wb"
+	  Position		  [720, 325, 740, 345]
+	  Port			  "5"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Rotor"
+	  SrcPort		  2
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [15, 0; 0, -85]
+	    DstBlock		    "prod1"
+	    DstPort		    2
+	  }
+	  Branch {
+	    Points		    [15, 0; 0, 115]
+	    DstBlock		    "prod2"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "q_cct"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [5, 0; 0, 150]
+	    DstBlock		    "prod2"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [85, 0; 0, 65]
+	    DstBlock		    "Rotor"
+	    DstPort		    3
+	  }
+	}
+	Line {
+	  SrcBlock		  "d_cct"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [45, 0; 0, -125]
+	    DstBlock		    "prod1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [100, 0; 0, -35]
+	    DstBlock		    "Rotor"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "prod2"
+	  SrcPort		  1
+	  Points		  [-35, 0; 0, -60]
+	  DstBlock		  "d_cct"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Rotor"
+	  SrcPort		  3
+	  DstBlock		  "out_Tem"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_Ex"
+	  SrcPort		  1
+	  DstBlock		  "d_cct"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Rotor"
+	  SrcPort		  4
+	  DstBlock		  "out_(wr-we)/wb"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_Tmech"
+	  SrcPort		  1
+	  DstBlock		  "Rotor"
+	  DstPort		  5
+	}
+	Line {
+	  SrcBlock		  "in_vqse"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_vdse"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Rotor"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "out_delta"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [5, 0; 0, -75; -540, 0; 0, 65]
+	    DstBlock		    "Mux1"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Mux1"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [5, 0; 0, -15]
+	    DstBlock		    "Fcn"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [5, 0; 0, 35]
+	    DstBlock		    "Fcn1"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "q_cct"
+	  SrcPort		  2
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Rotor"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, -130]
+	    DstBlock		    "VIPQ"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "d_cct"
+	  SrcPort		  2
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Rotor"
+	    DstPort		    4
+	  }
+	  Branch {
+	    Points		    [70, 0; 0, -175]
+	    DstBlock		    "VIPQ"
+	    DstPort		    4
+	  }
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [25, 0; 0, -25]
+	    DstBlock		    "q_cct"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [10, 0; 0, -160]
+	    DstBlock		    "VIPQ"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Fcn1"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "d_cct"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [25, 0; 0, -180]
+	    DstBlock		    "VIPQ"
+	    DstPort		    3
+	  }
+	}
+	Line {
+	  SrcBlock		  "VIPQ"
+	  SrcPort		  3
+	  DstBlock		  "out_Pgen"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "VIPQ"
+	  SrcPort		  4
+	  DstBlock		  "out_Qgen"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "prod1"
+	  SrcPort		  1
+	  Points		  [-25, 0; 0, 70]
+	  DstBlock		  "q_cct"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "VIPQ"
+	  SrcPort		  1
+	  DstBlock		  "T"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "q_cct"
+	  SrcPort		  3
+	  DstBlock		  "T2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "d_cct"
+	  SrcPort		  3
+	  DstBlock		  "T3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "d_cct"
+	  SrcPort		  4
+	  Points		  [0, 10]
+	  DstBlock		  "T4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "VIPQ"
+	  SrcPort		  2
+	  DstBlock		  "T1"
+	  DstPort		  1
+	}
+	Annotation {
+	  Position		  [387, 277]
+	  VerticalAlignment	  top
+	  Text			  "vdr"
+	}
+	Annotation {
+	  Position		  [390, 230]
+	  VerticalAlignment	  top
+	  Text			  "vqr"
+	}
+	Annotation {
+	  Position		  [482, 219]
+	  VerticalAlignment	  top
+	  Text			  "-iqr"
+	}
+	Annotation {
+	  Position		  [487, 274]
+	  VerticalAlignment	  top
+	  Text			  "psid"
+	}
+	Annotation {
+	  Position		  [487, 204]
+	  VerticalAlignment	  top
+	  Text			  "psiq"
+	}
+	Annotation {
+	  Position		  [487, 289]
+	  VerticalAlignment	  top
+	  Text			  "-idr"
+	}
+      }
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Pgen"
+      Position		      [335, 70, 355, 90]
+      Port		      "1"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Qgen"
+      Position		      [335, 115, 355, 135]
+      Port		      "2"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "delta"
+      Position		      [335, 160, 355, 180]
+      Port		      "3"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Tem"
+      Position		      [335, 205, 355, 225]
+      Port		      "4"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "(wr-we)/wb"
+      Position		      [335, 250, 355, 270]
+      Port		      "5"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Line {
+      SrcBlock		      "Tmech"
+      SrcPort		      1
+      DstBlock		      "smwes"
+      DstPort		      4
+    }
+    Line {
+      SrcBlock		      "smwes"
+      SrcPort		      1
+      DstBlock		      "Pgen"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "smwes"
+      SrcPort		      2
+      DstBlock		      "Qgen"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "smwes"
+      SrcPort		      3
+      DstBlock		      "delta"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Ex"
+      SrcPort		      1
+      DstBlock		      "smwes"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "vqe"
+      SrcPort		      1
+      DstBlock		      "smwes"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "vde"
+      SrcPort		      1
+      DstBlock		      "smwes"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "smwes"
+      SrcPort		      4
+      DstBlock		      "Tem"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "smwes"
+      SrcPort		      5
+      DstBlock		      "(wr-we)/wb"
+      DstPort		      1
+    }
+  }
+}

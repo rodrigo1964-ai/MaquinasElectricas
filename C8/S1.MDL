@@ -1,0 +1,670 @@
+Model {
+  Name			  "s1"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  on
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "2"
+  Solver		  ode15s
+  RelTol		  "1e-6"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "1e-3"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s1"
+    Location		    [14, 78, 763, 488]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      SubSystem
+      Name		      "-Tem"
+      Position		      [550, 259, 570, 301]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"-Tem"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "1/Laq"
+      Position		      [250, 297, 295, 343]
+      Gain		      "1/Laq "
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "1/Lf"
+      Position		      [165, 98, 200, 132]
+      Gain		      "1/Lf"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "1/wmo"
+      Position		      [445, 104, 495, 146]
+      Gain		      "1/wmo"
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Armature Reaction"
+      Position		      [270, 222, 365, 268]
+      Orientation	      left
+      InputValues	      "Ia"
+      OutputValues	      "Iar"
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [575, 112, 590, 128]
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Ea_"
+      Position		      [115, 275, 135, 310]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Ea_"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Ext_load"
+      Position		      [435, 336, 510, 374]
+      Gain		      "Rload"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Field\nPolarity"
+      Position		      [37, 135, 73, 165]
+      Orientation	      up
+      Gain		      "1"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Field _cct_resis"
+      Position		      [155, 45, 215, 75]
+      Orientation	      left
+      Gain		      "Rf+ Rrh"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "IaRa drop"
+      Position		      [290, 397, 340, 423]
+      Orientation	      left
+      Gain		      "Ra"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Ia_"
+      Position		      [330, 301, 365, 339]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "If"
+      Position		      [220, 99, 250, 131]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m1"
+      Position		      [592, 35, 675, 72]
+      DropShadow	      on
+      OpenFcn		      "m1"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m1.m"
+      MaskHelp		      "Uses m1.m to initialize and plot"
+      MaskDisplay	      "disp('Initialize\\nand plot')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m1"
+	Location		[570, 32767, 685, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [77, 52]
+	  VerticalAlignment	  top
+	  Text			  "Masked block of m1.m in Chapter 8\nto "
+				  "initialize s1.m and plot results"
+	}
+      }
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Mag_curve"
+      Position		      [350, 100, 425, 150]
+      InputValues	      "SHIP1"
+      OutputValues	      "SHVP1"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [615, 97, 640, 343]
+      Inputs		      "6"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [680, 205, 705, 235]
+      Floating		      off
+      Location		      [88, 174, 671, 543]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "2.000000"
+      YMin		      "-150.000000"
+      YMax		      "150.000000"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      on
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Position		      [125, 96, 145, 134]
+      Inputs		      "-+"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum1"
+      Position		      [205, 290, 220, 345]
+      Inputs		      "+---"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum2"
+      Position		      [300, 106, 320, 144]
+      Inputs		      "+-"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [670, 157, 720, 173]
+      VariableName	      "y"
+      Buffer		      "5000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Relay
+      Name		      "brush drop"
+      Position		      [215, 367, 265, 383]
+      Orientation	      left
+      OnSwitchValue	      "eps"
+      OffSwitchValue	      "eps"
+      OnOutputValue	      "2"
+      OffOutputValue	      "-2"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "wm_"
+      Position		      [20, 291, 75, 309]
+      Value		      "wmrated"
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      DstBlock		      "1/Lf"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "1/Lf"
+      SrcPort		      1
+      DstBlock		      "If"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mag_curve"
+      SrcPort		      1
+      DstBlock		      "1/wmo"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum1"
+      SrcPort		      1
+      DstBlock		      "1/Laq"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "1/Laq"
+      SrcPort		      1
+      DstBlock		      "Ia_"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "-Tem"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      5
+    }
+    Line {
+      SrcBlock		      "wm_"
+      SrcPort		      1
+      DstBlock		      "Ea_"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Field _cct_resis"
+      SrcPort		      1
+      Points		      [-65, 0; 0, 45]
+      DstBlock		      "Sum"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Field\nPolarity"
+      SrcPort		      1
+      Points		      [0, -5]
+      DstBlock		      "Sum"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Ia_"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[20, 0; 0, 90]
+	DstBlock		"IaRa drop"
+	DstPort			1
+      }
+      Branch {
+	Points			[150, 0; 0, -30]
+	DstBlock		"-Tem"
+	DstPort			2
+      }
+      Branch {
+	Points			[20, 0; 0, -75]
+	DstBlock		"Armature Reaction"
+	DstPort			1
+      }
+      Branch {
+	Points			[20, 0; 0, -80]
+	DstBlock		"Mux"
+	DstPort			4
+      }
+      Branch {
+	Points			[20, 0; 0, 55]
+	DstBlock		"brush drop"
+	DstPort			1
+      }
+      Branch {
+	Points			[20, 0; 0, 35]
+	DstBlock		"Ext_load"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "1/wmo"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[25, 0; 0, 50; -425, 0]
+	DstBlock		"Ea_"
+	DstPort			1
+      }
+      Branch {
+	Points			[25, 0; 0, 145]
+	DstBlock		"-Tem"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Ea_"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[5, 0; 0, -95; -90, 0]
+	DstBlock		"Field\nPolarity"
+	DstPort			1
+      }
+      Branch {
+	Points			[5, 0; 0, -95]
+	DstBlock		"Mux"
+	DstPort			3
+      }
+      Branch {
+	DstBlock		"Sum1"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Sum2"
+      SrcPort		      1
+      DstBlock		      "Mag_curve"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Armature Reaction"
+      SrcPort		      1
+      Points		      [-10, 0; 0, -110]
+      DstBlock		      "Sum2"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "If"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Sum2"
+	DstPort			1
+      }
+      Branch {
+	Points			[10, 0; 0, -55]
+	DstBlock		"Field _cct_resis"
+	DstPort			1
+      }
+      Branch {
+	Points			[10, 0; 0, -55; 295, 0; 0, 100]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "brush drop"
+      SrcPort		      1
+      Points		      [-30, 0; 0, -35]
+      DstBlock		      "Sum1"
+      DstPort		      4
+    }
+    Line {
+      SrcBlock		      "IaRa drop"
+      SrcPort		      1
+      Points		      [-115, 0; 0, -85]
+      DstBlock		      "Sum1"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Ext_load"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[30, 0; 0, -35]
+	DstBlock		"Mux"
+	DstPort			6
+      }
+      Branch {
+	Points			[30, 0; 0, 85; -385, 0; 0, -130]
+	DstBlock		"Sum1"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [0, -5]
+      Branch {
+	Points			[0, 5]
+	DstBlock		"Scope"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -50]
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+    }
+    Annotation {
+      Position		      [282, 102]
+      VerticalAlignment	      top
+      Text		      "if"
+    }
+    Annotation {
+      Position		      [517, 88]
+      VerticalAlignment	      top
+      Text		      "Eao/wmo\n(or ka phi)"
+    }
+    Annotation {
+      Position		      [87, 287]
+      VerticalAlignment	      top
+      Text		      "wm"
+    }
+    Annotation {
+      Position		      [157, 277]
+      VerticalAlignment	      top
+      Text		      "Ea"
+    }
+    Annotation {
+      Position		      [407, 292]
+      VerticalAlignment	      top
+      Text		      "Ia"
+    }
+    Annotation {
+      Position		      [332, 102]
+      VerticalAlignment	      top
+      Text		      "ifeq"
+    }
+    Annotation {
+      Position		      [592, 347]
+      VerticalAlignment	      top
+      Text		      "Va"
+    }
+  }
+}

@@ -1,0 +1,1248 @@
+Model {
+  Name			  "s2"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "5"
+  Solver		  ode15s
+  RelTol		  "1e-6"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "0.005"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s2"
+    Location		    [63, 66, 783, 583]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Gain
+      Name		      "1/J"
+      Position		      [495, 164, 540, 206]
+      Gain		      "1/J"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "1/Laq"
+      Position		      [180, 189, 225, 231]
+      Gain		      "1/Laq"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "C1"
+      Position		      [115, 299, 130, 341]
+      Orientation	      left
+      Threshold		      "0.5"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "C2"
+      Position		      [135, 354, 150, 396]
+      Orientation	      left
+      Threshold		      "0.5"
+    }
+    Block {
+      BlockType		      Switch
+      Name		      "C3"
+      Position		      [155, 408, 170, 452]
+      Orientation	      left
+      Threshold		      "0.5"
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [250, 83, 265, 97]
+      NamePlacement	      alternate
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "D"
+      Position		      [505, 125, 560, 155]
+      Orientation	      left
+      Gain		      "D"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "D Latch"
+      Position		      [380, 260, 405, 295]
+      ShowPortLabels	      on
+      System {
+	Name			"D Latch"
+	Location		[470, 422, 684, 597]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "D"
+	  Position		  [25, 83, 55, 97]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "C"
+	  Position		  [80, 15, 110, 30]
+	  Orientation		  down
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  off
+	  MaskIconUnits		  autoscale
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "D Latch"
+	  Position		  [75, 51, 115, 124]
+	  ShowPortLabels	  on
+	  System {
+	    Name		    "D Latch"
+	    Location		    [756, 470, 1027, 609]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "D"
+	      Position		      [25, 55, 45, 75]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      EnablePort
+	      Name		      "C"
+	      Position		      [15, 15, 35, 35]
+	      StatesWhenEnabling      held
+	      ShowOutputPort	      off
+	    }
+	    Block {
+	      BlockType		      Logic
+	      Name		      "Logic"
+	      Position		      [135, 93, 165, 117]
+	      Operator		      NOT
+	      Inputs		      "1"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Q"
+	      Position		      [205, 55, 225, 75]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "!Q"
+	      Position		      [205, 95, 225, 115]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "1"
+	    }
+	    Line {
+	      SrcBlock		      "D"
+	      SrcPort		      1
+	      Points		      [50, 0]
+	      Branch {
+		Points			[0, 40]
+		DstBlock		"Logic"
+		DstPort			1
+	      }
+	      Branch {
+		DstBlock		"Q"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Logic"
+	      SrcPort		      1
+	      DstBlock		      "!Q"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Q"
+	  Position		  [140, 63, 170, 77]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "!Q"
+	  Position		  [140, 98, 170, 112]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "1"
+	}
+	Line {
+	  SrcBlock		  "D Latch"
+	  SrcPort		  2
+	  DstBlock		  "!Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "D"
+	  SrcPort		  1
+	  DstBlock		  "D Latch"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "D Latch"
+	  SrcPort		  1
+	  DstBlock		  "Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "C"
+	  SrcPort		  1
+	  DstBlock		  "D Latch"
+	  DstPort		  enable
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "D Latch1"
+      Position		      [500, 260, 525, 295]
+      ShowPortLabels	      on
+      System {
+	Name			"D Latch1"
+	Location		[516, 424, 730, 599]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "D"
+	  Position		  [25, 83, 55, 97]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "C"
+	  Position		  [80, 15, 110, 30]
+	  Orientation		  down
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  off
+	  MaskIconUnits		  autoscale
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "D Latch"
+	  Position		  [75, 51, 115, 124]
+	  ShowPortLabels	  on
+	  System {
+	    Name		    "D Latch"
+	    Location		    [756, 470, 1027, 609]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "D"
+	      Position		      [25, 55, 45, 75]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      EnablePort
+	      Name		      "C"
+	      Position		      [15, 15, 35, 35]
+	      StatesWhenEnabling      held
+	      ShowOutputPort	      off
+	    }
+	    Block {
+	      BlockType		      Logic
+	      Name		      "Logic"
+	      Position		      [135, 93, 165, 117]
+	      Operator		      NOT
+	      Inputs		      "1"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Q"
+	      Position		      [205, 55, 225, 75]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "!Q"
+	      Position		      [205, 95, 225, 115]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "1"
+	    }
+	    Line {
+	      SrcBlock		      "D"
+	      SrcPort		      1
+	      Points		      [50, 0]
+	      Branch {
+		Points			[0, 40]
+		DstBlock		"Logic"
+		DstPort			1
+	      }
+	      Branch {
+		DstBlock		"Q"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Logic"
+	      SrcPort		      1
+	      DstBlock		      "!Q"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Q"
+	  Position		  [140, 63, 170, 77]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "!Q"
+	  Position		  [140, 98, 170, 112]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "1"
+	}
+	Line {
+	  SrcBlock		  "D Latch"
+	  SrcPort		  2
+	  DstBlock		  "!Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "D"
+	  SrcPort		  1
+	  DstBlock		  "D Latch"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "D Latch"
+	  SrcPort		  1
+	  DstBlock		  "Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "C"
+	  SrcPort		  1
+	  DstBlock		  "D Latch"
+	  DstPort		  enable
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "D Latch2"
+      Position		      [620, 261, 645, 294]
+      ShowPortLabels	      on
+      System {
+	Name			"D Latch2"
+	Location		[516, 424, 730, 599]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "D"
+	  Position		  [25, 83, 55, 97]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "C"
+	  Position		  [80, 15, 110, 30]
+	  Orientation		  down
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  off
+	  MaskIconUnits		  autoscale
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "D Latch"
+	  Position		  [75, 51, 115, 124]
+	  ShowPortLabels	  on
+	  System {
+	    Name		    "D Latch"
+	    Location		    [756, 470, 1027, 609]
+	    Open		    off
+	    ScreenColor		    white
+	    Block {
+	      BlockType		      Inport
+	      Name		      "D"
+	      Position		      [25, 55, 45, 75]
+	      Port		      "1"
+	      PortWidth		      "-1"
+	      SampleTime	      "-1"
+	    }
+	    Block {
+	      BlockType		      EnablePort
+	      Name		      "C"
+	      Position		      [15, 15, 35, 35]
+	      StatesWhenEnabling      held
+	      ShowOutputPort	      off
+	    }
+	    Block {
+	      BlockType		      Logic
+	      Name		      "Logic"
+	      Position		      [135, 93, 165, 117]
+	      Operator		      NOT
+	      Inputs		      "1"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Q"
+	      Position		      [205, 55, 225, 75]
+	      Port		      "1"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "0"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "!Q"
+	      Position		      [205, 95, 225, 115]
+	      Port		      "2"
+	      OutputWhenDisabled      held
+	      InitialOutput	      "1"
+	    }
+	    Line {
+	      SrcBlock		      "D"
+	      SrcPort		      1
+	      Points		      [50, 0]
+	      Branch {
+		Points			[0, 40]
+		DstBlock		"Logic"
+		DstPort			1
+	      }
+	      Branch {
+		DstBlock		"Q"
+		DstPort			1
+	      }
+	    }
+	    Line {
+	      SrcBlock		      "Logic"
+	      SrcPort		      1
+	      DstBlock		      "!Q"
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Q"
+	  Position		  [140, 63, 170, 77]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "!Q"
+	  Position		  [140, 98, 170, 112]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "1"
+	}
+	Line {
+	  SrcBlock		  "D Latch"
+	  SrcPort		  2
+	  DstBlock		  "!Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "D"
+	  SrcPort		  1
+	  DstBlock		  "D Latch"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "D Latch"
+	  SrcPort		  1
+	  DstBlock		  "Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "C"
+	  SrcPort		  1
+	  DstBlock		  "D Latch"
+	  DstPort		  enable
+	}
+      }
+    }
+    Block {
+      BlockType		      Ground
+      Name		      "Ground"
+      Position		      [195, 292, 210, 308]
+      Orientation	      left
+    }
+    Block {
+      BlockType		      HitCross
+      Name		      "Hit \nCrossing"
+      Position		      [325, 260, 345, 280]
+      HitCrossingOffset	      "60"
+      HitCrossingDirection      falling
+      ShowOutputPort	      on
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator"
+      Position		      [265, 194, 300, 226]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator2"
+      Position		      [565, 169, 595, 201]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m2"
+      Position		      [47, 40, 115, 78]
+      DropShadow	      on
+      OpenFcn		      "m2"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m2.m"
+      MaskHelp		      "Uses m2.m to initialize and plot"
+      MaskDisplay	      "disp('Initialize\\nand plot')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m2"
+	Location		[110, 32767, 224, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [62, 52]
+	  VerticalAlignment	  top
+	  Text			  "Masked block of m2.m in Chapter 8\nto "
+				  "initialize s2.m and plot results"
+	}
+      }
+    }
+    Block {
+      BlockType		      Memory
+      Name		      "Memory"
+      Position		      [455, 261, 475, 279]
+      X0		      "0"
+      InheritSampleTime	      off
+    }
+    Block {
+      BlockType		      Memory
+      Name		      "Memory1"
+      Position		      [570, 261, 590, 279]
+      X0		      "0"
+      InheritSampleTime	      off
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [279, 60, 481, 75]
+      Orientation	      up
+      Inputs		      "4"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Product"
+      Position		      [355, 181, 380, 219]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Product"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Product2"
+      Position		      [170, 108, 195, 137]
+      Orientation	      left
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Product2"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+      }
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Ra"
+      Position		      [210, 255, 245, 285]
+      Orientation	      left
+      Gain		      "Ra"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [555, 79, 575, 101]
+      Floating		      off
+      Location		      [66, 381, 725, 594]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "auto"
+      YMin		      "-10"
+      YMax		      "250"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Position		      [135, 162, 155, 253]
+      Inputs		      "-+----"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum2"
+      Position		      [455, 147, 470, 223]
+      Inputs		      "-++"
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "T"
+      Position		      [425, 281, 430, 289]
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "T1"
+      Position		      [540, 281, 545, 289]
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "T2"
+      Position		      [665, 281, 670, 289]
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Tmech"
+      Position		      [400, 211, 430, 229]
+      Value		      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [540, 41, 610, 59]
+      VariableName	      "y"
+      Buffer		      "2000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Vdc- Vbrush"
+      Position		      [35, 155, 70, 185]
+      Value		      "218"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "kaphi"
+      Position		      [235, 150, 275, 170]
+      Value		      "1.3"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "r1"
+      Position		      [220, 326, 270, 354]
+      Orientation	      left
+      Gain		      "0.872"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "r2"
+      Position		      [220, 381, 270, 409]
+      Orientation	      left
+      Gain		      "0.523"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "r3"
+      Position		      [230, 436, 275, 464]
+      Orientation	      left
+      Gain		      "0.313"
+    }
+    Line {
+      SrcBlock		      "Integrator2"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[20, 0; 0, -70; -165, 0]
+	DstBlock		"Mux"
+	DstPort			4
+      }
+      Branch {
+	Points			[20, 0; 0, -70]
+	Branch {
+	  Points		  [0, 25]
+	  DstBlock		  "D"
+	  DstPort		  1
+	}
+	Branch {
+	  DstBlock		  "Product2"
+	  DstPort		  1
+	}
+      }
+    }
+    Line {
+      SrcBlock		      "r3"
+      SrcPort		      1
+      Points		      [-40, 0]
+      DstBlock		      "C3"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "r2"
+      SrcPort		      1
+      Points		      [-50, 0]
+      DstBlock		      "C2"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "r1"
+      SrcPort		      1
+      Points		      [-70, 0]
+      DstBlock		      "C1"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "C1"
+      SrcPort		      1
+      Points		      [-10, 0; 0, -90]
+      DstBlock		      "Sum"
+      DstPort		      5
+    }
+    Line {
+      SrcBlock		      "C2"
+      SrcPort		      1
+      Points		      [-35, 0; 0, -160]
+      DstBlock		      "Sum"
+      DstPort		      4
+    }
+    Line {
+      SrcBlock		      "C3"
+      SrcPort		      1
+      Points		      [-60, 0; 0, -230]
+      DstBlock		      "Sum"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [0, -5]
+      Branch {
+	Points			[135, 0; 0, 40]
+	DstBlock		"Scope"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Tmech"
+      SrcPort		      1
+      Points		      [0, -10]
+      DstBlock		      "Sum2"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Product"
+      SrcPort		      1
+      Points		      [30, 0; 0, -15]
+      DstBlock		      "Sum2"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Ra"
+      SrcPort		      1
+      Points		      [-85, 0]
+      DstBlock		      "Sum"
+      DstPort		      6
+    }
+    Line {
+      SrcBlock		      "Integrator"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[0, 240]
+	DstBlock		"r3"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 185]
+	DstBlock		"r2"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 130]
+	DstBlock		"r1"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 60]
+	DstBlock		"Hit \nCrossing"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 60]
+	DstBlock		"Ra"
+	DstPort			1
+      }
+      Branch {
+	Points			[20, 0; 0, -75; 80, 0]
+	DstBlock		"Mux"
+	DstPort			3
+      }
+      Branch {
+	DstBlock		"Product"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Vdc- Vbrush"
+      SrcPort		      1
+      Points		      [20, 0; 0, 15]
+      DstBlock		      "Sum"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "1/Laq"
+      SrcPort		      1
+      DstBlock		      "Integrator"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "D"
+      SrcPort		      1
+      Points		      [-78, 0; 0, 20]
+      DstBlock		      "Sum2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "kaphi"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[25, 0; 0, 30]
+	DstBlock		"Product"
+	DstPort			1
+      }
+      Branch {
+	Points			[25, 0; 0, -30]
+	DstBlock		"Product2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "1/J"
+      SrcPort		      1
+      DstBlock		      "Integrator2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum2"
+      SrcPort		      1
+      DstBlock		      "1/J"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      DstBlock		      "1/Laq"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Memory"
+      SrcPort		      1
+      DstBlock		      "D Latch1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Memory1"
+      SrcPort		      1
+      DstBlock		      "D Latch2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Hit \nCrossing"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"D Latch"
+	DstPort			1
+      }
+      Branch {
+	Points			[15, 0]
+	DstBlock		"D Latch"
+	DstPort			2
+      }
+      Branch {
+	Points			[10, 0; 0, 45; 125, 0]
+	DstBlock		"D Latch1"
+	DstPort			2
+      }
+      Branch {
+	Points			[10, 0; 0, 45; 245, 0]
+	DstBlock		"D Latch2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "D Latch2"
+      SrcPort		      1
+      Points		      [25, 0; 0, 160]
+      DstBlock		      "C3"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "D Latch1"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Memory1"
+	DstPort			1
+      }
+      Branch {
+	Points			[20, 0; 0, 105]
+	DstBlock		"C2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "D Latch"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Memory"
+	DstPort			1
+      }
+      Branch {
+	Points			[25, 0; 0, 50]
+	DstBlock		"C1"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Product2"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[-60, 0; 0, 45]
+	DstBlock		"Sum"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -20; 190, 0]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Ground"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[-45, 0]
+	DstBlock		"C1"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 60]
+	DstBlock		"C2"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 115]
+	DstBlock		"C3"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "D Latch"
+      SrcPort		      2
+      DstBlock		      "T"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "D Latch1"
+      SrcPort		      2
+      DstBlock		      "T1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "D Latch2"
+      SrcPort		      2
+      DstBlock		      "T2"
+      DstPort		      1
+    }
+    Annotation {
+      Position		      [312, 197]
+      VerticalAlignment	      top
+      Text		      "Ia"
+    }
+    Annotation {
+      Position		      [402, 172]
+      VerticalAlignment	      top
+      Text		      "Tem"
+    }
+    Annotation {
+      Position		      [142, 98]
+      VerticalAlignment	      top
+      Text		      "Ea"
+    }
+    Annotation {
+      Position		      [637, 172]
+      VerticalAlignment	      top
+      Text		      "wm"
+    }
+  }
+}

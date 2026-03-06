@@ -1,0 +1,448 @@
+Model {
+  Name			  "s1"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "0.05"
+  Solver		  ode45
+  RelTol		  "1e-5"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "0.01"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s1"
+    Location		    [53, 59, 721, 353]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [385, 66, 405, 84]
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m1"
+      Position		      [100, 165, 172, 197]
+      DropShadow	      on
+      OpenFcn		      "m1"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m1.m"
+      MaskHelp		      "Uses m1.m"
+      MaskDisplay	      "disp('Plot yout ')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m1"
+	Location		[10, 55, 1133, 881]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [157, 77]
+	  VerticalAlignment	  top
+	  Text			  "Uses m1.m to plot the simulated result\nsto"
+				  "red in yout of  the Matlab workspace\n"
+	}
+      }
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Gain"
+      Position		      [260, 137, 290, 173]
+      Gain		      "-1"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Inner\nProduct"
+      Position		      [220, 137, 240, 168]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Inner\nProduct"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Inner\nProduct1"
+      Position		      [245, 31, 265, 64]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Inner\nProduct1"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator"
+      Position		      [315, 139, 345, 171]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator1"
+      Position		      [300, 34, 330, 66]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "5"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [425, 58, 450, 172]
+      Inputs		      "3"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [505, 135, 535, 165]
+      Floating		      off
+      Location		      [51, 320, 731, 575]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "0.05            "
+      YMin		      "-5              "
+      YMax		      "5               "
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      on
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [495, 67, 535, 93]
+      VariableName	      "yout"
+      Buffer		      "3000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "w"
+      Position		      [140, 75, 175, 105]
+      Value		      "377"
+    }
+    Line {
+      SrcBlock		      "w"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[10, 0; 0, 55]
+	DstBlock		"Inner\nProduct"
+	DstPort			1
+      }
+      Branch {
+	Points			[10, 0; 0, -50]
+	DstBlock		"Inner\nProduct1"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Inner\nProduct1"
+      SrcPort		      1
+      DstBlock		      "Integrator1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[10, 0; 0, -35]
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+      Branch {
+	Points			[10, 0; 0, 35]
+	DstBlock		"Scope"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Inner\nProduct"
+      SrcPort		      1
+      DstBlock		      "Gain"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Gain"
+      SrcPort		      1
+      DstBlock		      "Integrator"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Integrator1"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[230, 0; 0, 160; -375, 0; 0, -50]
+	DstBlock		"Inner\nProduct"
+	DstPort			2
+      }
+      Branch {
+	Points			[40, 0; 0, 65]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Integrator"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[10, 0; 0, -45; -135, 0; 0, -55]
+	DstBlock		"Inner\nProduct1"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Mux"
+	DstPort			3
+      }
+    }
+    Annotation {
+      Position		      [367, 232]
+      VerticalAlignment	      top
+      Text		      "In this simulation, the  system parameters "
+			      "and initial conditions have been \nentered "
+			      "as constants.  After running the simulation, "
+			      "double click on masked \nblock \"m1\" to "
+			      "plot simulated  results on MATLAB figure window."
+    }
+    Annotation {
+      Position		      [382, 134]
+      VerticalAlignment	      top
+      Text		      "y2"
+    }
+    Annotation {
+      Position		      [352, 32]
+      VerticalAlignment	      top
+      Text		      "y1"
+    }
+  }
+}

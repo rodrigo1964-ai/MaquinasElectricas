@@ -1,0 +1,639 @@
+Model {
+  Name			  "s1c"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "tstop"
+  Solver		  ode15s
+  RelTol		  "5e-5"
+  AbsTol		  "5e-5"
+  Refine		  "1"
+  MaxStep		  "2e-3"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  4
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s1c"
+    Location		    [33, 51, 839, 552]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [45, 85, 65, 105]
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "FFT"
+      Position		      [714, 21, 765, 45]
+      DropShadow	      on
+      OpenFcn		      "fftplot"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of fftplot.m"
+      MaskDisplay	      "disp('Plots FFT')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"FFT"
+	Location		[125, 32767, 465, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [227, 38]
+	  VerticalAlignment	  top
+	  Text			  "FFT computation using the time and variable "
+				  "arrays(column)\nin the Matlab workspace.  "
+				  "It uses fftplot.m in the user's \nMatlab "
+				  "directory.  fftplot.m  will interpolate "
+				  "for values\nat uniformly spaced time "
+				  "interval.  "
+	}
+      }
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn"
+      Position		      [155, 165, 320, 195]
+      Expr		      "wb*(u[2]-(r1/xl1)*(u[3]-u[1]))"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn2"
+      Position		      [150, 344, 330, 376]
+      Expr		      "wb*(u[2] -(rp2/xpl2)*(u[1]-u[3]))"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn3"
+      Position		      [465, 236, 640, 274]
+      Expr		      "xM*(u[1]/xl1+u[2]/xpl2-u[3]/xm)"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn4"
+      Position		      [495, 156, 585, 184]
+      Expr		      "(u[1]-u[2])/xl1"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn5"
+      Position		      [490, 360, 585, 390]
+      Expr		      "(u[1]-u[2])/xpl2"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Load Module"
+      Position		      [730, 370, 765, 420]
+      ShowPortLabels	      off
+      System {
+	Name			"Load Module"
+	Location		[64, 124, 294, 386]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [180, 55, 200, 75]
+	  Orientation		  left
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "HGR"
+	  Position		  [90, 44, 130, 86]
+	  Orientation		  left
+	  Gain			  "-RH"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [15, 55, 35, 75]
+	  Orientation		  left
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "HGR"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "HGR"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Look-Up\nTable"
+      Position		      [575, 288, 635, 322]
+      Orientation	      left
+      InputValues	      "psisat"
+      OutputValues	      "Dpsi"
+    }
+    Block {
+      BlockType		      Memory
+      Name		      "Memory"
+      Position		      [505, 293, 530, 317]
+      Orientation	      left
+      X0		      "0"
+      InheritSampleTime	      off
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [120, 138, 140, 222]
+      Inputs		      "3"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux1"
+      Position		      [120, 322, 140, 398]
+      Inputs		      "3"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux2"
+      Position		      [440, 346, 460, 399]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux3"
+      Position		      [430, 223, 445, 287]
+      Inputs		      "3"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux4"
+      Position		      [450, 144, 470, 191]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux5"
+      Position		      [93, 65, 697, 80]
+      Orientation	      up
+      Inputs		      "6"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [440, 32, 455, 48]
+      Floating		      off
+      Location		      [32, 438, 874, 684]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "0.2"
+      YMin		      "-400"
+      YMax		      "400"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [300, 32, 350, 48]
+      Orientation	      left
+      VariableName	      "y"
+      Buffer		      "50000"
+      Decimation	      "2"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m1"
+      Position		      [592, 21, 650, 47]
+      DropShadow	      on
+      OpenFcn		      "m1"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m1.m"
+      MaskHelp		      "Uses m1.m to initialize and plot"
+      MaskDisplay	      "disp('Initialize\\nand plot')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m1"
+	Location		[5, 32767, 170, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [127, 38]
+	  VerticalAlignment	  top
+	  Text			  "This masked block uses m1.m\nto initialize "
+				  "s1c.m.\nand plots the simulated results  "
+	}
+      }
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "psi1_"
+      Position		      [335, 167, 365, 193]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "Psi1o"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "psi2'_"
+      Position		      [345, 347, 375, 373]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "Psip2o"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Sin
+      Name		      "v1"
+      Position		      [25, 165, 60, 195]
+      Amplitude		      "Vpk"
+      Frequency		      "wb"
+      Phase		      "0*pi/2"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Out_psi1"
+      Position		      [740, 100, 760, 120]
+      Port		      "1"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Out_psim"
+      Position		      [750, 245, 770, 265]
+      Port		      "2"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Out_i1"
+      Position		      [665, 160, 685, 180]
+      Port		      "3"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Block {
+      BlockType		      Outport
+      Name		      "Out_i2'"
+      Position		      [645, 365, 665, 385]
+      Port		      "4"
+      OutputWhenDisabled      held
+      InitialOutput	      "0"
+    }
+    Line {
+      SrcBlock		      "Look-Up\nTable"
+      SrcPort		      1
+      DstBlock		      "Memory"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Memory"
+      SrcPort		      1
+      Points		      [-90, 0; 0, -30]
+      DstBlock		      "Mux3"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Mux5"
+      SrcPort		      1
+      Points		      [0, -20; 5, 0]
+      Branch {
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"Scope"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Fcn5"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[25, 0; 0, 20]
+	DstBlock		"Load Module"
+	DstPort			1
+      }
+      Branch {
+	Points			[25, 0; 0, -25; 95, 0; 0, -255]
+	DstBlock		"Mux5"
+	DstPort			6
+      }
+      Branch {
+	DstBlock		"Out_i2'"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Fcn4"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[40, 0; 0, -70; -85, 0]
+	DstBlock		"Mux5"
+	DstPort			5
+      }
+      Branch {
+	DstBlock		"Out_i1"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      DstBlock		      "Mux5"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "v1"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[15, 0; 0, -75; 165, 0]
+	DstBlock		"Mux5"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Mux"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Mux2"
+      SrcPort		      1
+      DstBlock		      "Fcn5"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "psi2'_"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Mux2"
+	DstPort			1
+      }
+      Branch {
+	Points			[25, 0; 0, -105]
+	DstBlock		"Mux3"
+	DstPort			2
+      }
+      Branch {
+	Points			[25, 0; 0, -50; -305, 0; 0, 25]
+	DstBlock		"Mux1"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Load Module"
+      SrcPort		      1
+      Points		      [15, 0]
+      Branch {
+	Points			[0, 35; -695, 0; 0, -70]
+	DstBlock		"Mux1"
+	DstPort			2
+      }
+      Branch {
+	Points			[0, 35; -695, 0; 0, -315; 255, 0]
+	DstBlock		"Mux5"
+	DstPort			3
+      }
+    }
+    Line {
+      SrcBlock		      "Mux1"
+      SrcPort		      1
+      DstBlock		      "Fcn2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Fcn3"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[15, 0; 0, 50]
+	DstBlock		"Look-Up\nTable"
+	DstPort			1
+      }
+      Branch {
+	Points			[50, 0; 0, -150; -250, 0]
+	DstBlock		"Mux5"
+	DstPort			4
+      }
+      Branch {
+	Points			[50, 0; 0, 165; -285, 0; 0, -35]
+	DstBlock		"Mux2"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Out_psim"
+	DstPort			1
+      }
+      Branch {
+	Points			[50, 0; 0, -135; -595, 0; 0, 30]
+	DstBlock		"Mux"
+	DstPort			1
+      }
+      Branch {
+	Points			[50, 0; 0, 165; -600, 0; 0, -35]
+	DstBlock		"Mux1"
+	DstPort			3
+      }
+      Branch {
+	Points			[50, 0; 0, -45; -270, 0; 0, -30]
+	DstBlock		"Mux4"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "psi1_"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[35, 0; 0, 55; -305, 0; 0, -25]
+	DstBlock		"Mux"
+	DstPort			3
+      }
+      Branch {
+	Points			[35, 0; 0, -70]
+	DstBlock		"Out_psi1"
+	DstPort			1
+      }
+      Branch {
+	Points			[35, 0; 0, -25]
+	DstBlock		"Mux4"
+	DstPort			1
+      }
+      Branch {
+	Points			[35, 0; 0, 55]
+	DstBlock		"Mux3"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Mux4"
+      SrcPort		      1
+      DstBlock		      "Fcn4"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mux3"
+      SrcPort		      1
+      DstBlock		      "Fcn3"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Fcn2"
+      SrcPort		      1
+      DstBlock		      "psi2'_"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Fcn"
+      SrcPort		      1
+      DstBlock		      "psi1_"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      DstBlock		      "Fcn"
+      DstPort		      1
+    }
+    Annotation {
+      Position		      [392, 467]
+      VerticalAlignment	      top
+      Text		      " Double click masked block FFT to run fftplot.m "
+			      "and provide the input requested in the MATLAB "
+			      "command \nwindow to obtain the time and frequenc"
+			      "y plots."
+    }
+    Annotation {
+      Position		      [392, 435]
+      VerticalAlignment	      top
+      Text		      "Double click the masked block m1 or run m1.m "
+			      "in MATLAB command window to initialize this "
+			      "simulation.\nType return after the K>> prompt "
+			      "in the MATLAB command window to plot simulated "
+			      "results. "
+    }
+    Annotation {
+      Position		      [602, 359]
+      VerticalAlignment	      top
+      Text		      "i2'"
+    }
+    Annotation {
+      Position		      [72, 357]
+      VerticalAlignment	      top
+      Text		      "v2p"
+    }
+    Annotation {
+      Position		      [477, 294]
+      VerticalAlignment	      top
+      Text		      "Dpsi"
+    }
+    Annotation {
+      Position		      [667, 237]
+      VerticalAlignment	      top
+      Text		      "psim"
+    }
+    Annotation {
+      Position		      [387, 343]
+      VerticalAlignment	      top
+      Text		      "psi2'"
+    }
+    Annotation {
+      Position		      [382, 162]
+      VerticalAlignment	      top
+      Text		      "psi1"
+    }
+    Annotation {
+      Position		      [602, 157]
+      VerticalAlignment	      top
+      Text		      "i1"
+    }
+  }
+}

@@ -1,0 +1,1896 @@
+Model {
+  Name			  "s1"
+  Version		  2.00
+  SimParamPage		  WorkspaceI/O
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "tstop"
+  Solver		  ode113
+  RelTol		  "1e-6"
+  AbsTol		  "1e-5"
+  Refine		  "1"
+  MaxStep		  "1e-3"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  4
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s1"
+    Location		    [12, 23, 737, 485]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [101, 35, 129, 60]
+      Orientation	      up
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Daxis"
+      Position		      [350, 265, 385, 320]
+      ShowPortLabels	      off
+      System {
+	Name			"Daxis"
+	Location		[213, 440, 1045, 854]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vds"
+	  Position		  [50, 140, 70, 160]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_(wr/wb)*psiqr'"
+	  Position		  [45, 290, 65, 310]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [145, 135, 310, 165]
+	  Expr			  "wb*(u[2]+(rs/xls)*(u[1]-u[3]))"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn2"
+	  Position		  [145, 284, 325, 316]
+	  Expr			  "wb*(-u[2] +(rpr/xplr)*(u[3]-u[1]))"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn3"
+	  Position		  [485, 207, 635, 243]
+	  Expr			  "xM*(u[1]/xls+u[2]/xplr)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn4"
+	  Position		  [495, 126, 585, 154]
+	  Expr			  "(u[1]-u[2])/xls"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn5"
+	  Position		  [490, 300, 585, 330]
+	  Expr			  "(u[1]-u[2])/xplr"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Position		  [100, 108, 120, 192]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux1"
+	  Position		  [105, 262, 125, 338]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux2"
+	  Position		  [450, 286, 470, 339]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux3"
+	  Position		  [445, 193, 465, 257]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux4"
+	  Position		  [450, 114, 470, 161]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "psidr'_"
+	  Position		  [345, 287, 375, 313]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "Psipdro"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "psids_"
+	  Position		  [335, 137, 365, 163]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "Psidso"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_psids"
+	  Position		  [735, 65, 755, 85]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_ids"
+	  Position		  [735, 130, 755, 150]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_idr'"
+	  Position		  [735, 305, 755, 325]
+	  Port			  "3"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_psidr'"
+	  Position		  [735, 260, 755, 280]
+	  Port			  "4"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Mux2"
+	  SrcPort		  1
+	  DstBlock		  "Fcn5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "psidr'_"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Mux2"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -60]
+	    DstBlock		    "Mux3"
+	    DstPort		    2
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -60; -330, 0; 0, 35]
+	    DstBlock		    "Mux1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -30]
+	    DstBlock		    "out_psidr'"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Mux1"
+	  SrcPort		  1
+	  DstBlock		  "Fcn2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn3"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [55, 0; 0, 140; -285, 0; 0, -40]
+	    DstBlock		    "Mux2"
+	    DstPort		    2
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, -135; -615, 0; 0, 30]
+	    DstBlock		    "Mux"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, 140; -620, 0; 0, -40]
+	    DstBlock		    "Mux1"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, -45; -270, 0; 0, -30]
+	    DstBlock		    "Mux4"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "psids_"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [35, 0; 0, 60; -325, 0; 0, -30]
+	    DstBlock		    "Mux"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -25]
+	    DstBlock		    "Mux4"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, 60]
+	    DstBlock		    "Mux3"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -75]
+	    DstBlock		    "out_psids"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Mux4"
+	  SrcPort		  1
+	  DstBlock		  "Fcn4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux3"
+	  SrcPort		  1
+	  DstBlock		  "Fcn3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn2"
+	  SrcPort		  1
+	  DstBlock		  "psidr'_"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  DstBlock		  "psids_"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "Fcn"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn4"
+	  SrcPort		  1
+	  DstBlock		  "out_ids"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_vds"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_(wr/wb)*psiqr'"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Fcn5"
+	  SrcPort		  1
+	  DstBlock		  "out_idr'"
+	  DstPort		  1
+	}
+	Annotation {
+	  Position		  [602, 127]
+	  VerticalAlignment	  top
+	  Text			  "ids"
+	}
+	Annotation {
+	  Position		  [382, 132]
+	  VerticalAlignment	  top
+	  Text			  "psids"
+	}
+	Annotation {
+	  Position		  [667, 207]
+	  VerticalAlignment	  top
+	  Text			  "psiqm"
+	}
+	Annotation {
+	  Position		  [602, 299]
+	  VerticalAlignment	  top
+	  Text			  "idr'"
+	}
+	Annotation {
+	  Position		  [392, 283]
+	  VerticalAlignment	  top
+	  Text			  "psidr'"
+	}
+      }
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn"
+      Position		      [70, 135, 175, 165]
+      Expr		      "Vm*cos(u[1])"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn1"
+      Position		      [65, 185, 175, 215]
+      Expr		      "Vm*cos(u[1]-2*pi/3)"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn2"
+      Position		      [65, 246, 175, 274]
+      Expr		      "Vm*cos(u[1]+2*pi/3)"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m1"
+      Position		      [632, 32, 700, 77]
+      DropShadow	      on
+      OpenFcn		      "m1"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m1.m"
+      MaskHelp		      "Uses m1.m to initialize and plot"
+      MaskDisplay	      "disp('Initialize\\nand plot')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m1"
+	Location		[660, 32767, 820, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [97, 62]
+	  VerticalAlignment	  top
+	  Text			  "Masked block of m1.m to initialize s1.m\nand"
+				  " plot results"
+	}
+      }
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [475, 16, 500, 84]
+      Inputs		      "5"
+    }
+    Block {
+      BlockType		      Product
+      Name		      "Product"
+      Position		      [360, 164, 380, 186]
+      Orientation	      left
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Product
+      Name		      "Product1"
+      Position		      [360, 208, 380, 232]
+      Orientation	      left
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Qaxis"
+      Position		      [345, 90, 380, 145]
+      ShowPortLabels	      off
+      System {
+	Name			"Qaxis"
+	Location		[213, 440, 1045, 854]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vqs"
+	  Position		  [50, 140, 70, 160]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_(wr/wb)*psidr'"
+	  Position		  [45, 290, 65, 310]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [145, 135, 310, 165]
+	  Expr			  "wb*(u[2]+(rs/xls)*(u[1]-u[3]))"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn2"
+	  Position		  [145, 284, 325, 316]
+	  Expr			  "wb*(u[2] +(rpr/xplr)*(u[3]-u[1]))"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn3"
+	  Position		  [485, 207, 635, 243]
+	  Expr			  "xM*(u[1]/xls+u[2]/xplr)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn4"
+	  Position		  [495, 126, 585, 154]
+	  Expr			  "(u[1]-u[2])/xls"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn5"
+	  Position		  [490, 300, 585, 330]
+	  Expr			  "(u[1]-u[2])/xplr"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Position		  [100, 108, 120, 192]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux1"
+	  Position		  [105, 262, 125, 338]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux2"
+	  Position		  [450, 286, 470, 339]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux3"
+	  Position		  [445, 193, 465, 257]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux4"
+	  Position		  [450, 114, 470, 161]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "psiqr'_"
+	  Position		  [345, 287, 375, 313]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "Psipqro"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "psiqs_"
+	  Position		  [335, 137, 365, 163]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "Psiqso"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_psiqs"
+	  Position		  [735, 65, 755, 85]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_iqs"
+	  Position		  [735, 130, 755, 150]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_iqr'"
+	  Position		  [735, 305, 755, 325]
+	  Port			  "3"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_psiqr'"
+	  Position		  [735, 260, 755, 280]
+	  Port			  "4"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Mux2"
+	  SrcPort		  1
+	  DstBlock		  "Fcn5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "psiqr'_"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Mux2"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -60]
+	    DstBlock		    "Mux3"
+	    DstPort		    2
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -60; -330, 0; 0, 35]
+	    DstBlock		    "Mux1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -30]
+	    DstBlock		    "out_psiqr'"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Mux1"
+	  SrcPort		  1
+	  DstBlock		  "Fcn2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn3"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [55, 0; 0, 140; -285, 0; 0, -40]
+	    DstBlock		    "Mux2"
+	    DstPort		    2
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, -135; -615, 0; 0, 30]
+	    DstBlock		    "Mux"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, 140; -620, 0; 0, -40]
+	    DstBlock		    "Mux1"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [55, 0; 0, -45; -270, 0; 0, -30]
+	    DstBlock		    "Mux4"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "psiqs_"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [35, 0; 0, 60; -325, 0; 0, -30]
+	    DstBlock		    "Mux"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -25]
+	    DstBlock		    "Mux4"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, 60]
+	    DstBlock		    "Mux3"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [35, 0; 0, -75]
+	    DstBlock		    "out_psiqs"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Mux4"
+	  SrcPort		  1
+	  DstBlock		  "Fcn4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux3"
+	  SrcPort		  1
+	  DstBlock		  "Fcn3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn2"
+	  SrcPort		  1
+	  DstBlock		  "psiqr'_"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  DstBlock		  "psiqs_"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "Fcn"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn4"
+	  SrcPort		  1
+	  DstBlock		  "out_iqs"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_vqs"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_(wr/wb)*psidr'"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Fcn5"
+	  SrcPort		  1
+	  DstBlock		  "out_iqr'"
+	  DstPort		  1
+	}
+	Annotation {
+	  Position		  [602, 127]
+	  VerticalAlignment	  top
+	  Text			  "iqs"
+	}
+	Annotation {
+	  Position		  [382, 132]
+	  VerticalAlignment	  top
+	  Text			  "psiqs"
+	}
+	Annotation {
+	  Position		  [667, 207]
+	  VerticalAlignment	  top
+	  Text			  "psiqm"
+	}
+	Annotation {
+	  Position		  [602, 299]
+	  VerticalAlignment	  top
+	  Text			  "iqr'"
+	}
+	Annotation {
+	  Position		  [392, 283]
+	  VerticalAlignment	  top
+	  Text			  "psiqr'"
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Rotor"
+      Position		      [490, 159, 530, 231]
+      Orientation	      left
+      ShowPortLabels	      off
+      System {
+	Name			"Rotor"
+	Location		[149, 82, 784, 328]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_psids"
+	  Position		  [55, 40, 75, 60]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_iqs"
+	  Position		  [55, 80, 75, 100]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_psiqs"
+	  Position		  [55, 120, 75, 140]
+	  Port			  "3"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_ids"
+	  Position		  [55, 160, 75, 180]
+	  Port			  "4"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_Tmech"
+	  Position		  [55, 200, 75, 220]
+	  Port			  "5"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "1/2H"
+	  Position		  [395, 109, 460, 161]
+	  Gain			  "1/(2*H)"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "1/s"
+	  Position		  [480, 120, 510, 150]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "wrbywbo"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Damping\ncoefficient"
+	  Position		  [440, 177, 510, 213]
+	  Orientation		  left
+	  Gain			  "Domega"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Position		  [105, 26, 130, 194]
+	  Inputs		  "4"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Taccl"
+	  Position		  [355, 95, 370, 175]
+	  Inputs		  "++-"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Tem_"
+	  Position		  [150, 96, 310, 124]
+	  Expr			  "Tfactor*(u[1]*u[2]-u[3]*u[4])"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_Tem"
+	  Position		  [540, 60, 560, 80]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_wr/wb"
+	  Position		  [550, 123, 570, 147]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_Tmech"
+	  SrcPort		  1
+	  Points		  [230, 0; 0, -75]
+	  DstBlock		  "Taccl"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Taccl"
+	  SrcPort		  1
+	  DstBlock		  "1/2H"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "1/2H"
+	  SrcPort		  1
+	  DstBlock		  "1/s"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Tem_"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Taccl"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [10, 0; 0, -40]
+	    DstBlock		    "out_Tem"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "1/s"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "out_wr/wb"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [15, 0; 0, 60]
+	    DstBlock		    "Damping\ncoefficient"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Damping\ncoefficient"
+	  SrcPort		  1
+	  Points		  [-105, 0; 0, -35]
+	  DstBlock		  "Taccl"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  DstBlock		  "Tem_"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_psids"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_iqs"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_psiqs"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "in_ids"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  4
+	}
+	Annotation {
+	  Position		  [407, 182]
+	  VerticalAlignment	  top
+	  Text			  "Tdamp"
+	}
+      }
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [560, 17, 575, 43]
+      Floating		      off
+      Location		      [15, 308, 735, 508]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "2"
+      YMin		      "-30"
+      YMax		      "30"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      off
+      MaxRows		      "5000"
+      Decimation	      "2"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Position		      [730, 170, 750, 250]
+      Inputs		      "+++"
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Term"
+      Position		      [415, 119, 425, 131]
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Term1"
+      Position		      [445, 294, 455, 306]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Tmech"
+      Position		      [445, 235, 485, 255]
+      ShowPortLabels	      on
+      MaskType		      "Repeating table"
+      MaskDescription	      "Repeating table."
+      MaskHelp		      "Repeats cycle given in table. Time values "
+			      "should be monotonically increasing."
+      MaskPromptString	      "Time values:|Output values:"
+      MaskStyleString	      "edit,edit"
+      MaskVariables	      "rep_seq_t=@1;rep_seq_y=@2;"
+      MaskInitialization      "period = max(rep_seq_t);\n"
+      MaskDisplay	      "plot([rep_seq_t,rep_seq_t+period,rep_seq_t+2*per"
+			      "iod,rep_seq_t(1)+3*period],[rep_seq_y,rep_seq_y,"
+			      "rep_seq_y,rep_seq_y(1)])"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      MaskValueString	      "tmech_time|tmech_value"
+      System {
+	Name			"Tmech"
+	Location		[382, 166, 692, 322]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Clock
+	  Name			  "Clock"
+	  Position		  [45, 60, 65, 80]
+	  DeleteFcn		  "simclock BlockIsBeingDestroyed"
+	  PostSaveFcn		  "simclock Save"
+	  Location		  [30, 40, 110, 80]
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn1"
+	  Position		  [110, 60, 150, 80]
+	  Expr			  "rem(u[1],period)"
+	}
+	Block {
+	  BlockType		  Lookup
+	  Name			  "Look-Up Table"
+	  Position		  [210, 58, 250, 82]
+	  InputValues		  "rep_seq_t"
+	  OutputValues		  "rep_seq_y"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [285, 60, 305, 80]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "Look-Up Table"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Clock"
+	  SrcPort		  1
+	  DstBlock		  "Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Look-Up Table"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [555, 61, 600, 79]
+      VariableName	      "y"
+      Buffer		      "80000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Zero_seq"
+      Position		      [465, 310, 500, 360]
+      ShowPortLabels	      off
+      System {
+	Name			"Zero_seq"
+	Location		[160, 675, 612, 861]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_v0s"
+	  Position		  [55, 60, 75, 80]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator"
+	  Position		  [265, 65, 295, 95]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "0"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [140, 59, 155, 101]
+	  Inputs		  "+-"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "rs"
+	  Position		  [200, 122, 245, 158]
+	  Orientation		  left
+	  Gain			  "rs"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "wb/xls"
+	  Position		  [180, 62, 240, 98]
+	  Gain			  "wb/xls"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_i0s"
+	  Position		  [365, 70, 385, 90]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "rs"
+	  SrcPort		  1
+	  Points		  [-80, 0; 0, -50]
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "wb/xls"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "wb/xls"
+	  SrcPort		  1
+	  DstBlock		  "Integrator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_v0s"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Integrator"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    Points		    [10, 0; 0, 60]
+	    DstBlock		    "rs"
+	    DstPort		    1
+	  }
+	  Branch {
+	    DstBlock		    "out_i0s"
+	    DstPort		    1
+	  }
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "abc2qds"
+      Position		      [235, 167, 280, 253]
+      ShowPortLabels	      off
+      System {
+	Name			"abc2qds"
+	Location		[108, 72, 707, 390]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vag"
+	  Position		  [80, 90, 100, 110]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vbg"
+	  Position		  [80, 135, 100, 155]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_vcg"
+	  Position		  [80, 180, 100, 200]
+	  Port			  "3"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "ias+ibs+ics"
+	  Position		  [80, 225, 100, 245]
+	  Port			  "4"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "1/Csg"
+	  Position		  [185, 215, 280, 255]
+	  Gain			  "50*Zb*wb"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [225, 81, 380, 109]
+	  Expr			  "(2/3)*(u[1] - (u[2]+u[3])/2)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn1"
+	  Position		  [225, 132, 375, 158]
+	  Expr			  "(u[3]-u[2])/sqrt(3)"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn2"
+	  Position		  [225, 177, 375, 203]
+	  Expr			  "(u[1]+u[2]+u[3])/3"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator"
+	  Position		  [300, 220, 330, 250]
+	  ExternalReset		  none
+	  InitialConditionSource  internal
+	  InitialCondition	  "0"
+	  LimitOutput		  off
+	  UpperSaturationLimit	  "inf"
+	  LowerSaturationLimit	  "-inf"
+	  ShowSaturationPort	  off
+	  ShowStatePort		  off
+	  AbsoluteTolerance	  "auto"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Position		  [145, 80, 170, 210]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [420, 178, 435, 227]
+	  Inputs		  "+-"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_vqs"
+	  Position		  [465, 85, 485, 105]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_vds"
+	  Position		  [465, 135, 485, 155]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_v0s"
+	  Position		  [465, 195, 485, 215]
+	  Port			  "3"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_vag"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_vbg"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_vcg"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  DstBlock		  "out_vqs"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Fcn1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [15, 0; 0, -50]
+	    DstBlock		    "Fcn"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [15, 0; 0, 45]
+	    DstBlock		    "Fcn2"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "out_vds"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_v0s"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn2"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "1/Csg"
+	  SrcPort		  1
+	  DstBlock		  "Integrator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "ias+ibs+ics"
+	  SrcPort		  1
+	  DstBlock		  "1/Csg"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Integrator"
+	  SrcPort		  1
+	  Points		  [50, 0; 0, -20]
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Annotation {
+	  Position		  [362, 222]
+	  VerticalAlignment	  top
+	  Text			  "vsg"
+	}
+      }
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "omega*t"
+      Position		      [16, 65, 74, 100]
+      Orientation	      down
+      Gain		      "120*pi"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "qds2abc"
+      Position		      [650, 170, 685, 250]
+      ShowPortLabels	      off
+      System {
+	Name			"qds2abc"
+	Location		[228, 79, 747, 289]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_iqs"
+	  Position		  [45, 50, 65, 70]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_ids"
+	  Position		  [45, 95, 65, 115]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_i0s"
+	  Position		  [45, 140, 65, 160]
+	  Port			  "3"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  Position		  [185, 36, 375, 64]
+	  Expr			  "u[1] + u[3]"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn1"
+	  Position		  [185, 92, 370, 118]
+	  Expr			  "-(u[1]+sqrt(3)*u[2])/2 +u[3]"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn2"
+	  Position		  [185, 147, 375, 173]
+	  Expr			  "-(u[1]-sqrt(3)*u[2])/2 + u[3]"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Position		  [110, 34, 135, 176]
+	  Inputs		  "3"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_ias"
+	  Position		  [440, 40, 460, 60]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_ibs"
+	  Position		  [440, 95, 460, 115]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_ics"
+	  Position		  [440, 150, 460, 170]
+	  Port			  "3"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_ids"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_iqs"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "in_i0s"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "out_ibs"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  DstBlock		  "out_ias"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    DstBlock		    "Fcn1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [15, 0; 0, -55]
+	    DstBlock		    "Fcn"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [15, 0; 0, 55]
+	    DstBlock		    "Fcn2"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Fcn2"
+	  SrcPort		  1
+	  DstBlock		  "out_ics"
+	  DstPort		  1
+	}
+      }
+    }
+    Line {
+      SrcBlock		      "Daxis"
+      SrcPort		      2
+      Points		      [230, 0; 0, -57]
+      Branch {
+	Points			[0, -18]
+	DstBlock		"qds2abc"
+	DstPort			2
+      }
+      Branch {
+	Points			[0, -18]
+	DstBlock		"Rotor"
+	DstPort			4
+      }
+    }
+    Line {
+      SrcBlock		      "Product1"
+      SrcPort		      1
+      Points		      [-35, 0; 0, -90]
+      DstBlock		      "Qaxis"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Qaxis"
+      SrcPort		      1
+      Points		      [215, 0; 0, 100]
+      DstBlock		      "Rotor"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "abc2qds"
+      SrcPort		      2
+      Points		      [25, 0; 0, 70]
+      DstBlock		      "Daxis"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "abc2qds"
+      SrcPort		      1
+      Points		      [25, 0; 0, -75]
+      DstBlock		      "Qaxis"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Qaxis"
+      SrcPort		      2
+      Points		      [235, 0; 0, 65]
+      Branch {
+	Points			[0, 10]
+	DstBlock		"qds2abc"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 5]
+	DstBlock		"Rotor"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Product"
+      SrcPort		      1
+      Points		      [-25, 0; 0, 130]
+      DstBlock		      "Daxis"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Rotor"
+      SrcPort		      2
+      Points		      [0, 0]
+      Branch {
+	Points			[-45, 0; 0, -35]
+	DstBlock		"Product"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Product1"
+	DstPort			1
+      }
+      Branch {
+	Points			[-45, 0; 0, -150]
+	DstBlock		"Mux"
+	DstPort			4
+      }
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[15, 0; 0, 20]
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+      Branch {
+	Points			[15, 0; 0, -20]
+	DstBlock		"Scope"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Rotor"
+      SrcPort		      1
+      Points		      [-35, 0; 0, -100]
+      DstBlock		      "Mux"
+      DstPort		      5
+    }
+    Line {
+      SrcBlock		      "omega*t"
+      SrcPort		      1
+      Points		      [0, 10]
+      Branch {
+	Points			[0, 35]
+	DstBlock		"Fcn"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 85]
+	DstBlock		"Fcn1"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 145]
+	DstBlock		"Fcn2"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Fcn1"
+      SrcPort		      1
+      DstBlock		      "abc2qds"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[0, -10; -70, 0]
+	DstBlock		"omega*t"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -10]
+	DstBlock		"Mux"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Fcn"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[35, 0; 0, 30]
+	DstBlock		"abc2qds"
+	DstPort			1
+      }
+      Branch {
+	Points			[35, 0; 0, -115]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Qaxis"
+      SrcPort		      4
+      Points		      [20, 0; 0, 30]
+      DstBlock		      "Product"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Daxis"
+      SrcPort		      4
+      Points		      [30, 0; 0, -90]
+      DstBlock		      "Product1"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "abc2qds"
+      SrcPort		      3
+      Points		      [0, 95]
+      DstBlock		      "Zero_seq"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "qds2abc"
+      SrcPort		      2
+      DstBlock		      "Sum"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "qds2abc"
+      SrcPort		      3
+      DstBlock		      "Sum"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Zero_seq"
+      SrcPort		      1
+      Points		      [130, 0]
+      DstBlock		      "qds2abc"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "qds2abc"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Sum"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -55; -260, 0; 0, -80]
+	DstBlock		"Mux"
+	DstPort			3
+      }
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      Points		      [10, 0; 0, 165; -545, 0]
+      DstBlock		      "abc2qds"
+      DstPort		      4
+    }
+    Line {
+      SrcBlock		      "Fcn2"
+      SrcPort		      1
+      Points		      [0, -40]
+      DstBlock		      "abc2qds"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Qaxis"
+      SrcPort		      3
+      DstBlock		      "Term"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Daxis"
+      SrcPort		      3
+      DstBlock		      "Term1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Daxis"
+      SrcPort		      1
+      Points		      [185, 0; 0, -105]
+      DstBlock		      "Rotor"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Tmech"
+      SrcPort		      1
+      Points		      [55, 0]
+      DstBlock		      "Rotor"
+      DstPort		      5
+    }
+    Annotation {
+      Position		      [107, 342]
+      VerticalAlignment	      top
+      Text		      "Induction Machine Simulation\n  in Stationary "
+			      "Reference Frame"
+    }
+    Annotation {
+      Position		      [522, 322]
+      VerticalAlignment	      top
+      Text		      "i0s"
+    }
+    Annotation {
+      Position		      [292, 167]
+      VerticalAlignment	      top
+      Text		      "vqs"
+    }
+    Annotation {
+      Position		      [471, 169]
+      VerticalAlignment	      top
+      Text		      "Tem"
+    }
+    Annotation {
+      Position		      [462, 197]
+      VerticalAlignment	      top
+      Text		      "wr/wb"
+    }
+    Annotation {
+      Position		      [189, 137]
+      VerticalAlignment	      top
+      Text		      "vag"
+    }
+    Annotation {
+      Position		      [194, 237]
+      VerticalAlignment	      top
+      Text		      "vcg"
+    }
+    Annotation {
+      Position		      [189, 187]
+      VerticalAlignment	      top
+      Text		      "vbg"
+    }
+    Annotation {
+      Position		      [292, 227]
+      VerticalAlignment	      top
+      Text		      "v0s"
+    }
+    Annotation {
+      Position		      [397, 82]
+      VerticalAlignment	      top
+      Text		      "psiqs"
+    }
+    Annotation {
+      Position		      [392, 97]
+      VerticalAlignment	      top
+      Text		      "iqs"
+    }
+    Annotation {
+      Position		      [397, 127]
+      VerticalAlignment	      top
+      Text		      "psiqr"
+    }
+    Annotation {
+      Position		      [697, 197]
+      VerticalAlignment	      top
+      Text		      "ibs"
+    }
+    Annotation {
+      Position		      [697, 222]
+      VerticalAlignment	      top
+      Text		      "ics"
+    }
+    Annotation {
+      Position		      [297, 197]
+      VerticalAlignment	      top
+      Text		      "vds"
+    }
+    Annotation {
+      Position		      [402, 257]
+      VerticalAlignment	      top
+      Text		      "psids"
+    }
+    Annotation {
+      Position		      [402, 272]
+      VerticalAlignment	      top
+      Text		      "ids"
+    }
+    Annotation {
+      Position		      [406, 302]
+      VerticalAlignment	      top
+      Text		      "psidr"
+    }
+    Annotation {
+      Position		      [702, 172]
+      VerticalAlignment	      top
+      Text		      "ias"
+    }
+  }
+}

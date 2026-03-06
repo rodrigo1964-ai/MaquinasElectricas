@@ -1,0 +1,743 @@
+Model {
+  Name			  "smg"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "tstop"
+  Solver		  ode45
+  RelTol		  "1e-5"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "1e-2"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "smg"
+    Location		    [84, 67, 746, 416]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      ZeroPole
+      Name		      "Butterworth\nLP Filter"
+      Position		      [405, 99, 430, 141]
+      Zeros		      "z"
+      Poles		      "p"
+      Gain		      "k"
+      MaskType		      "buttap"
+      MaskDescription	      "Analog Butterworth low pass filter.\n\n(Requires"
+			      " Signal Processing Toolbox)"
+      MaskHelp		      "Butterworth low pass filter using MATLAB's "
+			      "butter command."
+      MaskPromptString	      "Cutoff frequency (rad/sec)|Order"
+      MaskStyleString	      "edit,edit"
+      MaskInitialization      "[z,p,k]=buttap(@2); z=@1*z; p=@1*p; k=real(prod("
+			      "-p)); [num,den]=zp2tf(z,p,k); w=logspace(log10(@"
+			      "1/10),log10(10*@1),20); h=freqs(num,den,w); "
+      MaskDisplay	      "plot(20*log10(w),20*log10(abs(h)))"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      MaskValueString	      "300|4"
+    }
+    Block {
+      BlockType		      ZeroPole
+      Name		      "Butterworth\nLP Filter1"
+      Position		      [390, 191, 415, 229]
+      Zeros		      "z"
+      Poles		      "p"
+      Gain		      "k"
+      MaskType		      "buttap"
+      MaskDescription	      "Analog Butterworth low pass filter.\n\n(Requires"
+			      " Signal Processing Toolbox)"
+      MaskHelp		      "Butterworth low pass filter using MATLAB's "
+			      "butter command."
+      MaskPromptString	      "Cutoff frequency (rad/sec)|Order"
+      MaskStyleString	      "edit,edit"
+      MaskInitialization      "[z,p,k]=buttap(@2); z=@1*z; p=@1*p; k=real(prod("
+			      "-p)); [num,den]=zp2tf(z,p,k); w=logspace(log10(@"
+			      "1/10),log10(10*@1),20); h=freqs(num,den,w); "
+      MaskDisplay	      "plot(20*log10(w),20*log10(abs(h)))"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      MaskValueString	      "300|4"
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [30, 195, 50, 215]
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Inner\nProduct1"
+      Position		      [345, 109, 365, 131]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Inner\nProduct1"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Inner\nProduct2"
+      Position		      [340, 199, 360, 221]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Inner\nProduct2"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Inner\nProduct3"
+      Position		      [315, 269, 335, 291]
+      ShowPortLabels	      off
+      MaskType		      "Dot Product"
+      MaskDescription	      "Inner (dot) product.\ny=sum(u1.*u2)"
+      MaskHelp		      "Computes the inner (dot) product of the inputs: "
+			      "sum(u1.*u2).  The inputs are vectors of the "
+			      "same length. Output is a scalar."
+      MaskDisplay	      "disp('.\\n')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Inner\nProduct3"
+	Location		[33, 479, 253, 634]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_1"
+	  Position		  [15, 25, 35, 45]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "in_2"
+	  Position		  [15, 90, 35, 110]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  Position		  [65, 55, 90, 75]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  Position		  [125, 55, 145, 75]
+	  Inputs		  "+"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "out_1"
+	  Position		  [185, 55, 205, 75]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "in_2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "in_1"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "out_1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "mginit"
+      Position		      [46, 77, 110, 113]
+      DropShadow	      on
+      OpenFcn		      "mginit"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of mginit.m"
+      MaskHelp		      "Uses mginit.m to initialize simulation"
+      MaskDisplay	      "disp('Initialize')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"mginit"
+	Location		[175, 32767, 506, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [157, 52]
+	  VerticalAlignment	  top
+	  Text			  "Masked block of mginit.m "
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "mgplt"
+      Position		      [130, 79, 193, 115]
+      DropShadow	      on
+      OpenFcn		      "mgplt"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of mgplt.m"
+      MaskHelp		      "Uses mgplt.m to plot results"
+      MaskDisplay	      "disp('Plot')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"mgplt"
+	Location		[190, 32767, 670, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [207, 57]
+	  VerticalAlignment	  top
+	  Text			  "Masked block of mgplt.m"
+	}
+      }
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [100, 196, 130, 229]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux1"
+      Position		      [90, 136, 120, 169]
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux2"
+      Position		      [515, 286, 540, 319]
+      Orientation	      left
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Open-circuit\ncurve"
+      Position		      [155, 253, 205, 297]
+      InputValues	      "V"
+      OutputValues	      "I"
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Psi vs i"
+      Position		      [250, 191, 310, 239]
+      InputValues	      "psifull"
+      OutputValues	      "ifull"
+    }
+    Block {
+      BlockType		      Lookup
+      Name		      "Scaled \nopen-circuit\ncurve"
+      Position		      [255, 103, 315, 147]
+      InputValues	      "Vfull"
+      OutputValues	      "Ifull"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Position		      [535, 112, 550, 148]
+      Inputs		      "+-"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum1"
+      Position		      [535, 202, 550, 238]
+      Inputs		      "+-"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [145, 147, 195, 163]
+      VariableName	      "yin"
+      Buffer		      "4000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace1"
+      Position		      [415, 297, 465, 313]
+      Orientation	      left
+      VariableName	      "yout"
+      Buffer		      "4000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sin
+      Name		      "Voltage\nAmplitude\nVariation"
+      Position		      [30, 261, 60, 289]
+      Amplitude		      "Vmaxrms"
+      Frequency		      "pi/tstop"
+      Phase		      "0"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "error from\nrms curve"
+      Position		      [585, 115, 615, 145]
+      Floating		      off
+      Location		      [23, 381, 388, 568]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "3.500000"
+      YMin		      "-0.100000"
+      YMax		      "0.100000"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      on
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "error from \ninstantaneous\ncurve"
+      Position		      [590, 205, 620, 235]
+      Floating		      off
+      Location		      [390, 380, 753, 568]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "3.500000"
+      YMin		      "-0.100000"
+      YMax		      "0.100000"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      on
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "sine \nvoltage"
+      Position		      [155, 203, 205, 227]
+      Expr		      "sqrt(2)*u[2]*sin(we*u[1])"
+    }
+    Line {
+      SrcBlock		      "Inner\nProduct3"
+      SrcPort		      1
+      Points		      [170, 0; 0, -10]
+      Branch {
+	Points			[0, -130]
+	DstBlock		"Sum"
+	DstPort			2
+      }
+      Branch {
+	Points			[0, -40]
+	DstBlock		"Sum1"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Open-circuit\ncurve"
+      SrcPort		      1
+      Points		      [40, 0]
+      Branch {
+	Points			[0, 10]
+	DstBlock		"Inner\nProduct3"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Inner\nProduct3"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Butterworth\nLP Filter"
+      SrcPort		      1
+      DstBlock		      "Sum"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Butterworth\nLP Filter1"
+      SrcPort		      1
+      DstBlock		      "Sum1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      DstBlock		      "sine \nvoltage"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Voltage\nAmplitude\nVariation"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[20, 0]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Open-circuit\ncurve"
+	DstPort			1
+      }
+      Branch {
+	Points			[10, 0]
+	DstBlock		"Mux1"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "sine \nvoltage"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Psi vs i"
+	DstPort			1
+      }
+      Branch {
+	Points			[15, 0; 0, -90]
+	DstBlock		"Scaled \nopen-circuit\ncurve"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Inner\nProduct2"
+      SrcPort		      1
+      DstBlock		      "Butterworth\nLP Filter1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Inner\nProduct1"
+      SrcPort		      1
+      DstBlock		      "Butterworth\nLP Filter"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Scaled \nopen-circuit\ncurve"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[10, 0]
+	DstBlock		"Inner\nProduct1"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"Inner\nProduct1"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Psi vs i"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[10, 0]
+	DstBlock		"Inner\nProduct2"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"Inner\nProduct2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Mux1"
+      SrcPort		      1
+      DstBlock		      "To Workspace"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Mux"
+	DstPort			1
+      }
+      Branch {
+	Points			[5, 0; 0, -60]
+	DstBlock		"Mux1"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Sum1"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"error from \ninstantaneous\ncurve"
+	DstPort			1
+      }
+      Branch {
+	Points			[10, 0; 0, 75]
+	DstBlock		"Mux2"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"error from\nrms curve"
+	DstPort			1
+      }
+      Branch {
+	Points			[15, 0; 0, 180]
+	DstBlock		"Mux2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Mux2"
+      SrcPort		      1
+      DstBlock		      "To Workspace1"
+      DstPort		      1
+    }
+    Annotation {
+      Position		      [117, 262]
+      VerticalAlignment	      top
+      Text		      "Vrms"
+    }
+    Annotation {
+      Position		      [322, 32]
+      VerticalAlignment	      top
+      Text		      "Demonstration compares error from using the "
+			      "rms open circuit curve \nto that of using "
+			      "the instantaneous psi versus i curve  "
+    }
+    Annotation {
+      Position		      [234, 261]
+      Text		      "Irms"
+    }
+  }
+}

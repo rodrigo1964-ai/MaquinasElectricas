@@ -1,0 +1,269 @@
+Model {
+  Name			  "s3"
+  Version		  2.00
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  WideVectorLines	  off
+  PaperOrientation	  landscape
+  StartTime		  "0.0"
+  StopTime		  "tstop"
+  Solver		  ode45
+  RelTol		  "1e-5"
+  AbsTol		  "1e-6"
+  Refine		  "1"
+  MaxStep		  "0.01"
+  InitialStep		  "auto"
+  FixedStep		  "auto"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "s3"
+    Location		    [55, 65, 612, 321]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      Gain
+      Name		      "1/L"
+      Position		      [265, 135, 305, 175]
+      Gain		      "1/L"
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [130, 95, 150, 115]
+      DeleteFcn		      "simclock BlockIsBeingDestroyed"
+      PostSaveFcn	      "simclock Save"
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "m3"
+      Position		      [367, 18, 435, 56]
+      DropShadow	      on
+      OpenFcn		      "m3"
+      ShowPortLabels	      off
+      MaskType		      "Masked block of m3.m"
+      MaskHelp		      "Uses m3.m to initialize"
+      MaskDisplay	      "disp('Initialize\\nm3SIM')"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      off
+      MaskIconUnits	      autoscale
+      System {
+	Name			"m3"
+	Location		[285, 32767, 540, 32767]
+	Open			off
+	ScreenColor		white
+	Annotation {
+	  Position		  [156, 52]
+	  VerticalAlignment	  top
+	  Text			  "Masked block of m3.m to initialize\nand "
+				  "plot results"
+	}
+      }
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator"
+      Position		      [350, 139, 380, 171]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "iLo"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Position		      [128, 60, 302, 75]
+      Orientation	      up
+      Inputs		      "3"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "R"
+      Position		      [290, 98, 325, 132]
+      Orientation	      left
+      Gain		      "R"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope"
+      Position		      [160, 12, 180, 38]
+      Orientation	      left
+      Floating		      off
+      Location		      [51, 326, 614, 565]
+      Open		      on
+      Grid		      on
+      TickLabels	      on
+      ZoomMode		      on
+      TimeRange		      "auto"
+      YMin		      "-100"
+      YMax		      "100"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      LimitMaxRows	      on
+      MaxRows		      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Position		      [230, 135, 245, 170]
+      Inputs		      "-+"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      Position		      [250, 16, 295, 34]
+      VariableName	      "y"
+      Buffer		      "3000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Sin
+      Name		      "Vac"
+      Position		      [135, 144, 165, 176]
+      Amplitude		      "Vac_mag"
+      Frequency		      "we"
+      Phase		      "0"
+      SampleTime	      "-1"
+    }
+    Line {
+      SrcBlock		      "Integrator"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[40, 0; 0, -65]
+	DstBlock		"Mux"
+	DstPort			3
+      }
+      Branch {
+	Points			[40, 0; 0, -40]
+	DstBlock		"R"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Vac"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[15, 0; 0, -55; 30, 0]
+	DstBlock		"Mux"
+	DstPort			2
+      }
+      Branch {
+	DstBlock		"Sum"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "R"
+      SrcPort		      1
+      Points		      [-80, 0; 0, 30]
+      DstBlock		      "Sum"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      DstBlock		      "1/L"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	Points			[0, -30]
+	DstBlock		"Scope"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -30]
+	DstBlock		"To Workspace"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "1/L"
+      SrcPort		      1
+      DstBlock		      "Integrator"
+      DstPort		      1
+    }
+    Annotation {
+      Position		      [397, 142]
+      VerticalAlignment	      top
+      Text		      "i"
+    }
+    Annotation {
+      Position		      [267, 202]
+      VerticalAlignment	      top
+      Text		      "Double click on the masked block m3 in this "
+			      "screen or run m3.m \nin MATLAB command window "
+			      "to initialize this simulation. \nAfter simulatio"
+			      "n,  type return in MATLAB window to plot "
+			      "results.\n"
+    }
+  }
+}
